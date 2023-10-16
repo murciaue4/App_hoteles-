@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Galería de Imágenes</title>
+</head>
+<body>
+    <h1>Galería de Imágenes</h1>
+
+    <div class="image-gallery">
+        <% allNames.forEach(function(imagePath) { %>
+            <div class="image-container">
+                <img src="http://localhost:3001/<%= imagePath %>" alt="Imagen">
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>

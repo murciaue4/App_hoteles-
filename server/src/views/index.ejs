@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>imgLoader</title>
+</head>
+
+<body>
+    <h1>img shares</h1>
+    <form action="/api/upload" method="POST" enctype="multipart/form-data">
+
+        <input type="file" name="image">
+        <button type="submit">Submit</button>
+
+    </form>
+
+    <form action="/api/images" method="GET" enctype="multipart/form-data">
+
+        
+        <button type="submit">
+            getImages
+        </button>
+
+    </form>
+</body>
+
+</html>
