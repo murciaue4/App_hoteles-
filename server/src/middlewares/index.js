@@ -20,11 +20,11 @@ const storage = multer.diskStorage(
         }
     }
 );
-const uploader = multer(
+const uploader = multer( 
     {
-        storage,
+        storage: storage,
         destination: path.join(__dirname, '../public/uploads'),
-        limits: { fileSize: 2000000 },
+        limits: { fileSize: 1000000 },
         fileFilter: (req, file, cb) => {
             const fileTypes = /jpeg|jpg|png|gif/;
             const mimetype = fileTypes.test(file.mimetype);

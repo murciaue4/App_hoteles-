@@ -1,0 +1,23 @@
+.Footer{
+    color: #ecb365;
+    background-color: black;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: baseline
+
+}
+.Footer div {
+    height: auto;
+    margin: 10px;
+}
+.Footer div p {
+   font-size: x-small;
+}
+.Footer div h1{
+    font-size: small;
+    font-weight: 600;
+    color: white;
+}

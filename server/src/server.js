@@ -1,8 +1,17 @@
 const express = require('express');
+
 const path = require('path');
-const imgUploadsRoute = require('./routes/imgCRUD.routes');
+const adminRoute = require('./modules/clients/routes/imgCRUD.routes');
+const userRoute = require('./modules/users/routes/imgCRUD.routes');
+const authRoute = require('./modules/auth/routes/imgCRUD.routes');
 const { uploader } = require('./middlewares');
 const cors = require('cors');
+const morgan = require('morgan');
+
+
+
+
+
 
 
 
@@ -11,18 +20,24 @@ const app = express();
 
 
 //settings
-app.set('port', process.env.PORT || 3001);
+
+app.set('port', process.env.PORT || 3333); 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //middlewares
-app.use(uploader);
+app.use(express.json());
 app.use(cors());
+app.use(morgan('dev')) 
+app.use(express.urlencoded({extended: true}))
+app.use(uploader);
 app.use(express.static(path.join(__dirname, 'static')));
 
 
 //router
-app.use('/api', imgUploadsRoute);
+app.use('/api', adminRoute); 
+app.use('/user', userRoute); 
+app.use('/auth', authRoute);
 
 
 app.listen(app.get('port'), () => {

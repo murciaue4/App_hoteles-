@@ -1,0 +1,35 @@
+.logger{
+    height: 450px;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    border-radius: 15px;
+    box-shadow: 0px 0px 3px rgb(31, 31, 31);
+    margin:  50px 0 50px 0 ;
+}
+
+
+.izq{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    background-color: rgb(31, 31, 31);
+    background-repeat: no-repeat;
+    background-size:cover;
+    border-radius: 15px 0px 0px 15px;
+}
+
+.der{
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border-radius:  0px 15px 15px 0px ;
+}
+@media (max-width: 600px) {
+    .izq{
+        width: 70px;
+    }
+  }

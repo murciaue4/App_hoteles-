@@ -1,42 +1,33 @@
-import React from "react";
-import style from './styles/App.module.css'
-import Nav from './Nav';
-import ArticleCard from "./ArticleCard";
-import Cartelera from "./Cartelera";
-import Footer from "./Footer";
-import ArticleCardsContainer from "./ArticleCardsContainer";
-
+import React, { useEffect, useContext } from "react";
+import { Route, Routes } from "react-router-dom";
+import style from "./styles/App.module.css";
+import Logger from "./modules/log/Logger";
+import Nav from "./modules/Nav/Nav";
+import Footer from "./modules/Nav/Footer";
+import Home from "./modules/Home/Home";
+import {loginContext} from '../context/loginContext';
 
 function App() {
-  const articles = [
-    {
-      title: 'Bolsa de trabajo',
-      description: ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique assumenda sunt tenetur, aut rem praesentium suscipit corporis.'
-    },
-    {
-      title: 'Servicios',
-      description: ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique assumenda sunt tenetur, aut rem praesentium suscipit corporis.'
-    },
-    {
-      title: 'Comunidad',
-      description: ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique assumenda sunt tenetur, aut rem praesentium suscipit corporis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique assumenda sunt tenetur, aut rem praesentium suscipit corporis.'
-    },
-    // {
-    //   title: '¿Quiere apoyarnos?',
-    //   description: ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique assumenda sunt tenetur, aut rem praesentium suscipit corporis.'
-    // }
-  ]
+  //global context...
+  const {isLogin, setIsLogin, user} = useContext(loginContext)
+  //global context...
+
+useEffect(() => {
+  user ? setIsLogin(true):null;
+}, [])
+
+
   return (
-   <div className={style.App}>
-    <Nav/>
-    <Cartelera/>
-    <div >
-    <ArticleCardsContainer articles = {articles}/>
-    
-   
+    <div className={style.App}>
+      <Nav />
+
+      <Routes>
+        <Route path="/" element={!isLogin ? <Logger /> : <Home />} />
+        {/* <Route path="/login" element={<Logger />} /> */}
+      </Routes>
+
+      <Footer />
     </div>
-    <Footer/>
-   </div>
   );
 }
 
