@@ -6,7 +6,7 @@ const cardsInfo = () => {
   return (
     <div className={style.cardsInfo}>
       <div>
-        <Slider/>
+        
       </div>
     </div>
   );

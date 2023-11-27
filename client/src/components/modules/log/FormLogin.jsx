@@ -6,17 +6,11 @@ import Errors from "../alerts/Errors";
 function LoginForm({ handleSetShowForm01 }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState({
-    status: 0,
-    message: "",
-  });
+  const [error, setError] = useState(null);
   const handleSetError = (err) => {
     setError(err);
     setTimeout(() => {
-      setError({
-        status: 0,
-        message: "",
-      });
+      setError(null);
     }, 2000);
   };
 
@@ -38,18 +32,25 @@ function LoginForm({ handleSetShowForm01 }) {
       })
       .then((res) => {
         console.log({ servResponse: res.data.body });
+        //guardar el token en localstorage
         window.localStorage.setItem(
           "sessionLogin",
-          JSON.stringify(res.data.body)
+          JSON.stringify(res.data.body.token)
         );
+        //guardar credenciales en localstorage
+        window.localStorage.setItem(
+          "sessionLoginUser",
+          JSON.stringify({
+            id: res.data.body.id,
+            username: res.data.body.username,
+          })
+        );
+        
         location.reload();
       })
       .catch((err) => {
-        handleSetError({
-          status: err.response.data.status,
-          message: err.response.data.body,
-        });
-        console.log("----------------> ", err.response.data.body);
+        console.log(err);
+        handleSetError(err.response.data);
       });
   };
 
@@ -73,7 +74,7 @@ function LoginForm({ handleSetShowForm01 }) {
         <div className={style.title}>
           <h2>Iniciar Sesión</h2>
         </div>
-        {error.status !== 0 ? <Errors error = {error}/>:null}
+        {error? <Errors error={error} /> : null}
         <div className="divInputs">
           <label htmlFor="username">Usuario:</label>
           <input

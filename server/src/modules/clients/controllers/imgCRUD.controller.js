@@ -4,6 +4,7 @@ const auth = require('../../auth');
 const T_USERS = 'user';
 const T_HOTEL = 'hoteles';
 const T_IMAGE = 'images'
+const T_IMGUS = 'images_user'
 
 
 module.exports = function (dbIn) {
@@ -112,12 +113,12 @@ module.exports = function (dbIn) {
     };
     const postImages = async (req, res) => {
         try {
-            const result = await db.postImage(T_IMAGE, req)
+            const result = await db.postImage(T_IMGUS, req)
             res.status(200).render('uploaded')
 
 
         } catch (error) {
-            console.log(error.errno);
+            console.log(error);
             if (error.errno === 1062) {
                 res.status(300).render('index')
             } else {

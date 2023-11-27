@@ -9,7 +9,7 @@ const Slider = () => {
     // Función para obtener las imágenes desde la API
     const fetchImages = async () => {
       try {
-        const response = await fetch('http://localhost:3333/api/images');
+        const response = await fetch('http://localhost:3333/user/images');
         if (response.ok) {
           const data = await response.json();
           let resFilter = (data.body).map(el => el.name)    

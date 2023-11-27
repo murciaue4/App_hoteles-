@@ -1,5 +1,6 @@
 .logger{
-    height: 450px;
+    min-height: 450px;
+    max-height: auto;
     width: auto;
     display: flex;
     justify-content: center;
@@ -30,6 +31,11 @@
 }
 @media (max-width: 600px) {
     .izq{
-        width: 70px;
+        width: 33px;
+        border-radius: 0;
+        
+    }
+    .logger{
+        border-radius: 0px 15px  15px   0px; 
     }
   }

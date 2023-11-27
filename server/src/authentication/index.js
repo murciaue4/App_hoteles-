@@ -17,12 +17,11 @@ function verificarToken(data) {
 
 function optenerToken(authorization) {
     if (!authorization) {
-        throw error('no autorizado000 ', 401)
+        throw error('Header authorization not exist', 401)
     }
     if (authorization.indexOf('Bearer') === -1) {
-        throw error('Formato no valido', 401)
+        throw error('Invalid format of token', 401)
     }
-
     let token = authorization.replace('Bearer ', '');
     return token;
 };
@@ -31,7 +30,7 @@ function decodificarCabecera(req) {
     const permiso = req.headers.authorization;
     const token = optenerToken(permiso);
     const verificado = verificarToken(token);
-    console.log(verificado, 'verificasdoooooooooooooo');
+    console.log('authentication/user verificado', verificado);
     req.user = verificado;
     return verificado;
 };
@@ -39,9 +38,10 @@ function decodificarCabecera(req) {
 const checkearToken = {
     confirmarToken: function (req) {
         const decodificado = decodificarCabecera(req);
+        console.log('authentication/user decodificado: ', decodificado);
 
         if (!decodificado) {
-            throw error('no tienes autorizacion para hacer esto', 401)
+            throw error('Not authorized', 401)
         }
     }
 };
