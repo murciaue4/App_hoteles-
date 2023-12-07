@@ -1,6 +1,8 @@
 .Form01 {
+ 
+
     height: auto;
-    width: 100%;
+    width: 96%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -24,7 +26,9 @@
    
 }
 .Form01 label {
-     font-weight: 600;
+     font-weight: 400;
+     font-size: medium;
+     font-style: italic;
 
 }
 .Form01 input {
@@ -32,24 +36,24 @@
     margin-top: 1px;
     border-bottom: solid rgb(82, 82, 82) 1px;
     outline: none;
-    width: 200px;
+    width: 100%;
     font-size: large;
-    font-weight: 600;
+    font-weight: 700;
    
 
 }
 .Form01 form .select {
-  font-size: larger;
+  font-size: medium;
   font-weight: 500;
   border-bottom: #ecb365 solid 1px;
 
 }
 
-.Form01 span {
-    font-size: smaller;
-    text-align: end;
+.Form01 p {
+    font-size: small;
+    text-align: left;
     color: rgb(83, 84, 85);
-    cursor: pointer;
+    text-decoration: none;
 }
 
 .Form01 span:hover {

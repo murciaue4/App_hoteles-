@@ -1,5 +1,4 @@
 const express = require('express');
-
 const path = require('path');
 const adminRoute = require('./modules/clients/routes/imgCRUD.routes');
 const userRoute = require('./modules/users/routes/imgCRUD.routes');

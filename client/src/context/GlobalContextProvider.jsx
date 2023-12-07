@@ -38,6 +38,10 @@ const GlolContextProvider = ({ children }) => {
   const [token, setToken] = useState(localTokenExtractor);
   const [isLogin, setIsLogin] = useState(getLocalSession);
   const [user, setUser] = useState(getLocalSessionUser);
+  
+
+
+  
 
  const closeSession = async() => {
   //aplicar logica de cerrado de sessio cono el aoutoguardado y el envio de datos temporales al servidor ñiño.
@@ -46,7 +50,7 @@ const GlolContextProvider = ({ children }) => {
     setIsLogin(getLocalSession)
   }
 
-
+ 
 
 
   //creando un contexto global para los datos de login

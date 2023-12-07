@@ -22,18 +22,23 @@ function App() {
     <div className={style.App}>
       <Nav />
 
+      <div className={style.body}>
       <Routes>
         <Route path="/" element={<Home />} />
 
         <Route
           path="/login"
-          element={!isLogin ? <Logger /> : <Navigate to="/" />}
+          element={!isLogin ? <Logger /> : <Navigate to="/profile" />}
         />
         <Route
           path="/profile"
           element={isLogin ? <Profile /> : <Navigate to="/login" />}
         />
+        <Route path="/hoteles">
+            <Route path="post" element = {<FormHotel/>}> </Route>
+        </Route>
       </Routes>
+      </div>
 
       <Footer />
     </div>

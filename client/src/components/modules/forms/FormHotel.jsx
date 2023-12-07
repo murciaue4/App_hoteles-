@@ -60,9 +60,14 @@ const AddHotelForm = () => {
           data,
           config
         );
-        if (response) {
+       
+        
+        if (response.data.body[0].insertId) {
+          
           setIdInserted(response.data.body[0].insertId)
         }
+
+        
         console.log(response.data.body[0].insertId);
 
         setFormData({
@@ -82,13 +87,14 @@ const AddHotelForm = () => {
           precio_por_habitacion: 0,
         });
 
-       
+       setShowForm02(true)
       } catch (error) {
+        console.log('errrrrrrrrrr ::::: ',error.response.data);
         handleSetErr(error.response.data);
       }
     };
     sendData(formData);
-    setShowForm02(true)
+    
   };
   const renderFormHotel = () => {
     return (
@@ -249,7 +255,7 @@ const AddHotelForm = () => {
             </div>
           </form>
         </div>
-        {err.error ? <Errors error={err.body} /> : null}
+        {err.error ? <Errors error={err} /> : null}
       </div>
     );
   };

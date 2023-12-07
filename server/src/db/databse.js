@@ -65,14 +65,14 @@ const postImage = async (tabla, req, idHotel, idUser) => {
 //****************************UPDATE*******************************/
 
 const updateHotel = async (tabla, body, id) => {
-  const field = Object.keys(body)[0]
-  console.log( 'BODY on database: ', body[field]);
+  const field = Object.keys(body)[1]
+  
   try {
     if (!body || !body.description) {
       throw new error('Description is missing in the request body.');
     }
 
-    const result = await pool.query(`UPDATE ?? SET ${field} = '${body[field]}' WHERE id = ?`, [tabla, body.description, id]);
+    const result = await pool.query(`UPDATE ?? SET ${field} = '${body[field]}' WHERE id = ?`, [tabla, id]);
     console.log('Result from updateHotel in database: ', result);
     return result;
   } catch (error) {

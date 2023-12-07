@@ -1,88 +1,17 @@
-
 .App {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 0.2fr auto 1fr;
     margin: 0;
     margin: 0px;
     padding: 0;
     width: 100%;
-    min-height: 100vh; 
+    min-height: 100vh;
     max-height: auto;
-    
-    background-color: linear-gradient(
-        to bottom right,
-        #9664bb 0%,
-        #6f37a4 20%,
-        #95289b 40%,
-        #fe7098 60%,
-        #f973d2 80%,
-    );
-    
-    
 
 }
 
+.body{
 
-.articles {
-    width: 100%;
-    background: rgb(0,0,0);
-    background: linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(0,0,0,0.8423169560793067) 31%, rgba(0,0,0,0.8162867441898635) 47%, rgba(0,0,0,0.6826530905330883) 76%, rgba(0,0,0,0.5641859038537289) 88%, rgba(0,0,0,0.3353141549588585) 94%, rgba(0,0,0,0) 100%);
-    height: 20%;
-    position: absolute;
-    bottom: 90px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    
+    height: auto;
 
-    transition: height 0.5s ease;
-    /* Agregamos una transición para controlar la animación de regreso */
 }
-
-
-
-.articles:hover {
-    height: 38%;
-   
-    /* Cambiamos la altura en hover */
-}
-
-
-.article_card {
-    background: white;
-    width: 33%;
-    height: 80px;
-    
-    
-    opacity: 0.6; 
-    border-radius: 10px;
-    padding: 6px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: height 0.5s ease, opacity 1s ease;
-    overflow: hidden; 
-  white-space: wrap; 
-  text-overflow: ellipsis; 
-}
-.article_card h1{
-    text-align: left;
-    padding-left: 8px;
-    font-size: xx-large;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-
-
-.article_card:hover {
-    height: 80%; /* Cambiar la altura al 80% en hover */
-    opacity: 1; /* Opacidad al 100% en hover */
-}
-
-
-
-
-
- 

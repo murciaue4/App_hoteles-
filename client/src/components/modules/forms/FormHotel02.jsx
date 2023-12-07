@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { loginContext } from "../../../context/loginContext";
 import style from "./FormHotel02.module.css";
@@ -77,9 +78,9 @@ const AddHotelForm02 = (props) => {
     try {
       const response = await fetch(`http://localhost:3333/user/hoteles/${idInserted}`, config);
       const data = await response.json();
-  
+      
       console.log('Respuesta de fetch en FormHotel02:', data);
-      setFormData02({ description: "" })
+     
     } catch (error) {
       handleSetErr(error.message || 'Error en la solicitud.');
     }

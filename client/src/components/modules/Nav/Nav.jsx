@@ -17,20 +17,24 @@ const nav = () => {
         </div>
 
         <div className={style.searchBar}>
-          <div><button>Filtrar</button></div>
           <input type="search" />
-          <div><button type="submit">Search</button></div>
+          <div>
+            <button type="submit">Buscar</button>
+          </div>
         </div>
 
         <div className={style.account}>
           <div className={style.accountButton}>
             <Link to={"/login"} onClick={closeSession}>
-              {isLogin ? "LogOut" : "LogIn"}
+              {isLogin ? "Salir" : "Iniciar Sesion"}
             </Link>
           </div>
           <div className={style.accountPhoto}>
-            {isLogin ? <Link to={"/profile"}>{user.username[0].toUpperCase()}</Link> : <Link to={"/login"}>?</Link>}
-            
+            {isLogin ? (
+              <Link to={"/profile"}>{user.username[0].toUpperCase()}</Link>
+            ) : (
+              <Link to={"/login"}>?</Link>
+            )}
           </div>
         </div>
       </nav>

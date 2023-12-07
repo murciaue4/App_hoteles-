@@ -24,9 +24,8 @@ const Form01 = ({ handleSetShowForm01 }) => {
   const cambiar = () => {
     handleSetShowForm01(false);
   };
-  const handleShowPassword = ({target}) => {
+  const handleShowPassword = ({ target }) => {
     setShoePassword(!showPassword);
-  
   };
 
   const handleInputChange = (event) => {
@@ -55,18 +54,13 @@ const Form01 = ({ handleSetShowForm01 }) => {
         console.log(data);
 
         if (data.error) {
-         handleSetErr(data)
-         console.log(err);
+          handleSetErr(data);
+          console.log(err);
           return;
-        }else{
-          location.reload()
+        } else {
+          location.reload();
         }
-       
-      } catch (error) {
-        
-        
-       
-      }
+      } catch (error) {}
     };
     postNewUser(formData);
   };
@@ -79,7 +73,7 @@ const Form01 = ({ handleSetShowForm01 }) => {
           <br />
           <br />
           <label htmlFor="accountType">
-            Tipo de cuenta:
+            Tipo de cuenta :
             <select
               className={style.select}
               id="usertype"
@@ -90,12 +84,13 @@ const Form01 = ({ handleSetShowForm01 }) => {
               <option value="">Selecciona...</option>
               <option value="usuario">Usuario</option>
               <option value="propietario">Propietario</option>
+              <option value="Empresa">Empresa</option>
             </select>
           </label>
 
           <br />
           <label htmlFor="name">
-            Nombre:
+            Nombre :
             <br />
             <input
               required={true}
@@ -107,21 +102,27 @@ const Form01 = ({ handleSetShowForm01 }) => {
             />
           </label>
           <br />
-          <label htmlFor="lastname">
-            Apellidos:
-            <br />
-            <input
-              required={true}
-              type="text"
-              id="lastname"
-              name="lastname"
-              value={formData.lastname}
-              onChange={handleInputChange}
-            />
-          </label>
+
+          {formData.usertype != "Empresa" ? (
+            <label htmlFor="lastname">
+              Apellidos :
+              <br />
+              <input
+                required={true}
+                type="text"
+                id="lastname"
+                name="lastname"
+                value={formData.lastname}
+                onChange={handleInputChange}
+              />
+            </label>
+          ) : (
+            null
+          )}
+
           <br />
           <label htmlFor="email">
-            Correo Electrónico:
+            Correo Electrónico :
             <br />
             <input
               required={true}
@@ -134,13 +135,13 @@ const Form01 = ({ handleSetShowForm01 }) => {
           </label>
           <br />
           <label htmlFor="email">
-            @Username: <br />{" "}
-            <span>
+            @Username : <br />{" "}
+            <p>
               <i>
                 Crea un nombre de usuario, <br />
                 podras iniciar session con el luego.
               </i>
-            </span>
+            </p>
             <br />
             <input
               placeholder="Username"
@@ -154,18 +155,18 @@ const Form01 = ({ handleSetShowForm01 }) => {
           </label>
           <br />
           <label htmlFor="password">
-            Contraseña:
+            Contraseña :
             <br />
-            <span>
+            <p>
               <i>
                 8 Digitos, Mayúsculas, minúsculas, <br />
                 al menos un numero.
               </i>
-            </span>
+            </p>
             <br />
             <input
               required={true}
-              type={showPassword ?  "text" :"password"}
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               value={formData.password}
@@ -177,7 +178,6 @@ const Form01 = ({ handleSetShowForm01 }) => {
             className={style.showPassword}
             type="checkbox"
             onChange={handleShowPassword}
-            
           />
           <br />
         </div>
@@ -188,7 +188,7 @@ const Form01 = ({ handleSetShowForm01 }) => {
       <br />
       <span onClick={cambiar}>Ya tengo una cuenta</span>
       <br />
-      
+
       {err.error ? <Errors error={err} /> : null}
     </div>
   );

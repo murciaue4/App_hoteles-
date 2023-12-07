@@ -53,7 +53,7 @@ module.exports = function (dbIn) {
 
         } catch (error) {
 
-            respuestas.error(req, res, error, error.estatusCode)
+            respuestas.error(req, res, error, error.statusCode)
 
         }
     };
@@ -184,7 +184,7 @@ module.exports = function (dbIn) {
 
     const getAllImages = async (req, res) => {
         try {
-            const rows = await db.getImages(T_IMGUS);
+            const rows = await db.getImages(T_IMAGE);
             const data = rows.map(el => el.name)
             respuestas.sucess(req, res, data, 200)
         } catch (error) {
@@ -243,11 +243,12 @@ module.exports = function (dbIn) {
                 data = [...hoteles]
                 data[i].img = images
             };
+           
             console.log('getHotelsByUser: ', data);
             respuestas.sucess(req, res, data, 200)
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ message: 'somethings goes wrong', error })
+            respuestas.error(req, res, data, 401)
         }
     };
     const getAllUsers = async (req, res) => {

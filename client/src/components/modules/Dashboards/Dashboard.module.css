@@ -1,5 +1,356 @@
-.Dashboard{
+.Dashboard {
     height: 100%;
     width: 100%;
-    background-color: red;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+
+
+
+.Dashboard .banner {
+    border-bottom: solid 1px;
+    height: 250px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    background-color: #04293A;
+}
+
+.Dashboard .banner button {
+    margin-right: 10px;
+    margin-top: 10px;
+    box-shadow: 0 0 3px rgb(255, 255, 255);
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    font-size: large;
+
+}
+
+.photo {
+    box-shadow: 0px 0px 2px black;
+    width: 150px;
+    height: 160px;
+    border-radius: 50%;
+    position: absolute;
+    top: 150px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    background-color: #064663;
+}
+
+.Dashboard .photo button {
+    box-shadow: 0 0 1px #ecb365;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-right: 15px;
+    border-radius: 50%;
+    font-size: x-large;
+    background-color: black;
+    color: #ecb365;
+}
+
+.Dashboard .banner h1 {
+    color: white;
+    position: absolute;
+    top: 160px;
+    left: 180px;
+}
+
+.Dashboard .banner h4 {
+    color: white;
+    position: absolute;
+    top: 220px;
+    left: 180px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-inline: 10px;
+}
+.body .titles{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+  
+    
+}
+
+.body .titlesHover{
+     display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+}
+.body .titlesHover h1{
+    padding: 0;
+    height: 100%;
+    width: 50%;
+    border: solid 1px rgb(45, 45, 45);
+    cursor: pointer;
+    text-transform: capitalize;
+    border-radius: 0px 8px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
+    background-color: #04293A;
+    color: white;
+}
+.body .titles h1{
+    padding: 0;
+    height: 100%;
+    width: 50%;
+    border: solid 1px rgb(45, 45, 45);
+    cursor: pointer;
+    text-transform: capitalize;
+    border-radius: 8px ;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
+    
+    
+}
+.body h1:hover{
+    background-color: #04293A;
+    color: white;
+    transition: 0.7s;
+}
+
+.bodySearchButton {
+width: 100%;
+height: 30px;
+    
+
+}
+.bodySearchButton button{
+  height:30px;
+    width: 150px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    font-weight: 600;
+    color:#ecb365;
+    background-color: #000000;
+    box-shadow: 0 0 3px #ecb365;  
+}
+
+.bodyMisDatos {
+    
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.bodyMisDatos .divDatos {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 20px;
+    border-radius: 8px;
+    background-color:#04293A;
+
+}
+
+
+.bodyMisDatos .divDatos .box {
+
+   
+    width: 48%;
+    padding-left: 4px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: rgb(219, 219, 219);
+
+
+}
+
+.bodyOwners{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 0px 8px 8px 8px;
+    box-shadow: 0 0 2px black;
+    padding-block: 20px;
+    flex-wrap: wrap;
+    
+}
+.bodyOwners .ownerCard{
+    border: solid 0.4px gray;
+    box-shadow: 0 0 2px black;
+    height: 200px;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-block: 2px;
+    border-radius: 10px;
+    cursor: pointer;
+
+}
+.ownerCard i{
+    text-align: center;
+    font-size: smaller;
+    text-transform: capitalize;
+}
+.ownerCard h3{
+    text-transform: uppercase;
+    text-align: center;
+    font-size: small;
+    font-weight: 700;
+}
+.ownerCard p{
+    text-align: center;
+    text-transform: capitalize;
+}
+.ownerCard img{
+    width: 100%;
+    height:65%;
+    
+    
+}
+
+.bodyFavourites{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 0px 8px 8px 8px;
+    box-shadow: 0 0 2px black;
+    padding-block: 20px;
+    flex-wrap: wrap;
+    
+}
+.bodyFavourites .favouritesCard{
+    border: solid 0.4px gray;
+    box-shadow: 0 0 2px black;
+    height: 200px;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-block: 2px;
+    border-radius: 10px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+
+}
+.favouritesCard i{
+    text-align: center;
+    font-size: smaller;
+    text-transform: capitalize;
+}
+.favouritesCard h3{
+    text-transform: uppercase;
+    text-align: center;
+    font-size: small;
+    font-weight: 700;
+}
+.favouritesCard p{
+    text-align: center;
+    text-transform: capitalize;
+}
+.favouritesCard img{
+    width: 100%;
+    height:65%;
+}
+
+.bodyButtons {
+    
+    margin-top: 80px;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: left;
+    flex-wrap: wrap;
+
+}
+.bodyButtons .selectionBox{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: medium;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.bodyButtons .selection {
+    box-shadow: 0 0 2px #064663;
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    margin-inline: 10px;
+    margin-block: 10px;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    font-size: small;
+    font-weight: 500;
+    cursor: pointer;
+
+}
+
+.body .selection:hover {
+    box-shadow: 0 0 4px #064663;
+    background-color: #04293A;
+    color: white;
+    transition: 0.2s;
+}
+
+
+@media (max-width: 600px) {
+
+    .bodyMisDatos .divDatos {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        border: solid;
+        justify-content: space-around;
+    
+    }  
+    .bodyMisDatos .divDatos .box {
+
+        font-size: larger;
+        width: 98%;
+    
+    
+    }
 }
