@@ -20,25 +20,25 @@ const app = express();
 
 //settings
 
-app.set('port', process.env.PORT || 3333); 
+app.set('port', process.env.PORT || 3333);
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); 
 
 //middlewares
 app.use(express.json());
 app.use(cors());
-app.use(morgan('dev')) 
-app.use(express.urlencoded({extended: true}))
+app.use(morgan('dev'))
+app.use(express.urlencoded({ extended: true }))
 app.use(uploader);
 app.use(express.static(path.join(__dirname, 'static')));
 
 
 //router
-app.use('/api', adminRoute); 
-app.use('/user', userRoute); 
+app.use('/api', adminRoute);
+app.use('/user', userRoute);
 app.use('/auth', authRoute);
 
 
 app.listen(app.get('port'), () => {
-    console.log(`Server running on port`, app.get('port'));
+    console.log(`Server running on port`, app.get('port')); 
 })

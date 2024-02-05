@@ -3,15 +3,19 @@ import { useContext, useEffect, useState } from "react";
 import { loginContext } from "../../../context/loginContext";
 import axios from "axios";
 import Errors from "../alerts/Errors";
-import { Link, NavLink} from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import OwnerCard from "./CardOwner";
 
 const Dashboard = () => {
+ 
   const { user, closeSession, token } = useContext(loginContext);
   const [err, setErr] = useState(false);
   const [dataUser, setDtaUser] = useState();
   const [dataOwner, setDataOwner] = useState(null);
   const [showOwner, setShowOwner] = useState(false);
   const [showFavourites, setShowFavourites] = useState(false);
+
+
 
   const ownerHandleShow = () => {
     setShowOwner(!showOwner);
@@ -59,7 +63,9 @@ const Dashboard = () => {
     <div className={style.Dashboard}>
       <div className={style.banner}>
         <button>f</button>
-        <NavLink to={"/"}><button>X</button></NavLink>
+        <NavLink to={"/"}>
+          <button>X</button>
+        </NavLink>
         <h1>{`Hola, ${dataUser ? dataUser["name"] : "null"}`}</h1>
         <h4>{`${dataUser ? "@" + user["username"] : "null"}`}</h4>
         <div className={style.photo}>
@@ -122,59 +128,29 @@ const Dashboard = () => {
         <div className={!showOwner ? style.titles : style.titlesHover}>
           <h1 onClick={ownerHandleShow}>Propiedades</h1>
         </div>
-        {showOwner ? (
-          dataOwner ? (
-            <div className={style.bodyOwners}>
-              <div className={style.ownerCard}>
-                <i>{`${dataOwner ? dataOwner[0]["type"] : "null"}`}</i>
-                <h3>{`${dataOwner ? dataOwner[0]["name"] : "null"}`}</h3>
-
-                <img
-                  src={
-                    dataOwner
-                      ? `http://localhost:3333/${dataOwner[0]["img"][0]}`
-                      : "/"
-                  }
-                  alt="img"
-                />
-
-                <p>{`${dataOwner ? dataOwner[0]["location"] : "null"}`}</p>
-              </div>
-            </div>
-          ) : null
-        ) : null}
+        {showOwner && dataOwner ? (
+        <div className={style.bodyOwners}>
+          {dataOwner.map((owner, index) => (
+            <OwnerCard key={index} owner={owner} />
+          ))}
+        </div>
+      ) : null}
 
         <div className={!showFavourites ? style.titles : style.titlesHover}>
           <h1 onClick={favouritesHandleShow}>favoritos</h1>
         </div>
-        {showFavourites ? (
-          dataOwner ? (
-            <div className={style.bodyFavourites}>
-              <div className={style.favouritesCard}>
-                <i>{`${dataOwner ? dataOwner[0]["type"] : "null"}`}</i>
-                <h3>{`${dataOwner ? dataOwner[0]["name"] : "null"}`}</h3>
 
-                <img
-                  src={
-                    dataOwner
-                      ? `http://localhost:3333/${dataOwner[0]["img"][0]}`
-                      : "/"
-                  }
-                  alt="img"
-                />
+        {/* espacio para agregar la logica de los favoritos PENDIENTE PUES NEA */}
 
-                <p>{`${dataOwner ? dataOwner[0]["location"] : "null"}`}</p>
-              </div>
-            </div>
-          ) : null
-        ) : null}
         <div className={style.bodyButtons}>
           <div className={style.selectionBox}>
             <div onClick={ownerHandleShow} className={style.selection}></div>Mis
             propiedades
           </div>
           <div className={style.selectionBox}>
-            <div className={style.selection}></div>
+            <Link to={"/hoteles/post"}>
+              <div className={style.selection}></div>
+            </Link>
             <Link to={"/hoteles/post"}>Publicar</Link>
           </div>
           <div className={style.selectionBox}>
@@ -197,7 +173,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      
+
       {err.error ? <Errors error={err} /> : null}
     </div>
   );

@@ -1,7 +1,7 @@
 import { loginContext } from "./loginContext.js";
 import { useState } from "react";
 
-const GlolContextProvider = ({ children }) => {
+const GlobalContextProvider = ({ children }) => {
   
 
 
@@ -44,7 +44,7 @@ const GlolContextProvider = ({ children }) => {
   
 
  const closeSession = async() => {
-  //aplicar logica de cerrado de sessio cono el aoutoguardado y el envio de datos temporales al servidor ñiño.
+  //aplicar logica de cerrado de sessio cono el aoutoguardado y el envio de datos temporales al servidor mañiño.
     window.localStorage.removeItem("sessionLogin");
     window.localStorage.removeItem("sessionLoginUser");
     setIsLogin(getLocalSession)
@@ -71,4 +71,4 @@ const GlolContextProvider = ({ children }) => {
   );
 };
 
-export default GlolContextProvider;
+export default GlobalContextProvider;

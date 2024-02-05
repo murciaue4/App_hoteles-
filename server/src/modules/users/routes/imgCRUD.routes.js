@@ -16,10 +16,10 @@ router.post('/hoteles',seguridad(),postHoteles)
 router.patch('/hoteles/:id',seguridad(),updateHoteles)
 
 //GET
-router.get('/images', seguridad(), getAllImages)
+router.get('/images', getAllImages)
 router.get('/users', seguridad(),getAllUsers)
 router.get('/users/:id', seguridad(),getUsers)
-router.get('/hoteles', seguridad(),getAllHotels)
+router.get('/hoteles',getAllHotels)
 router.get('/hoteles/:id',seguridad(),getHotels)
 router.get('/hoteles/id_user/:id',seguridad(),getHotelsByUser)
 

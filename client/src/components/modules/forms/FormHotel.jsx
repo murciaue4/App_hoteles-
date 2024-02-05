@@ -7,7 +7,7 @@ import FormHotel02 from "./FormHotel02";
 
 const AddHotelForm = () => {
   const { token, user } = useContext(loginContext);
-  const [idInserted, setIdInserted] = useState()
+  const [idInserted, setIdInserted] = useState();
   const [err, setErr] = useState({});
   const [formData, setFormData] = useState({
     id: 0,
@@ -25,8 +25,7 @@ const AddHotelForm = () => {
     aire_acondicionado: false,
     precio_por_habitacion: 0,
   });
-  const [showForm02, setShowForm02] = useState(false)
-  
+  const [showForm02, setShowForm02] = useState(false);
 
   const handleSetErr = (err) => {
     setErr(err);
@@ -60,14 +59,11 @@ const AddHotelForm = () => {
           data,
           config
         );
-       
-        
+
         if (response.data.body[0].insertId) {
-          
-          setIdInserted(response.data.body[0].insertId)
+          setIdInserted(response.data.body[0].insertId);
         }
 
-        
         console.log(response.data.body[0].insertId);
 
         setFormData({
@@ -87,14 +83,13 @@ const AddHotelForm = () => {
           precio_por_habitacion: 0,
         });
 
-       setShowForm02(true)
+        setShowForm02(true);
       } catch (error) {
-        console.log('errrrrrrrrrr ::::: ',error.response.data);
+        console.log("errrrrrrrrrr ::::: ", error.response.data);
         handleSetErr(error.response.data);
       }
     };
     sendData(formData);
-    
   };
   const renderFormHotel = () => {
     return (
@@ -132,14 +127,23 @@ const AddHotelForm = () => {
               </label>
               <label>
                 Ubicación:
-                <input
-                  type="text"
+                <br />
+                <select
                   name="location"
                   value={formData.location}
                   onChange={handleChangeForms}
                   required
-                />
+                >
+                  <option value="">Seleccione una ubicaion</option>
+                  <option value="El Porvenir">El Porvenir</option>
+                  <option value="B. Aires">B. Aires</option>
+                  <option value="S. Helena">S. Helena</option>
+                  <option value="El Oasis">El Oasis</option>
+                  <option value="Cuerna Vaca">Cuerna Vaca</option>
+                  <option value="Pto. Gaitan">Pto. Gaitan</option>
+                </select>
               </label>
+              <br />
               <label>
                 Capacidad:
                 <input
@@ -150,7 +154,7 @@ const AddHotelForm = () => {
                   required
                 />
               </label>
-
+<br />
               <label>
                 Camas:
                 <input
@@ -161,6 +165,7 @@ const AddHotelForm = () => {
                   required
                 />
               </label>
+              <br />
               <label>
                 Precio por Habitación:
                 <input
@@ -261,11 +266,13 @@ const AddHotelForm = () => {
   };
 
   return (
-
-  <>
-  {!showForm02? renderFormHotel() : <FormHotel02 idInserted = {idInserted}  />}
-  </>
-  
+    <>
+      {!showForm02 ? (
+        renderFormHotel()
+      ) : (
+        <FormHotel02 idInserted={idInserted} />
+      )}
+    </>
   );
 };
 
