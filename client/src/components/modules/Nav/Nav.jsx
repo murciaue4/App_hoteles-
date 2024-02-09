@@ -9,21 +9,19 @@ const nav = () => {
   return (
     <div className={style.Nav}>
       <nav>
-        <div className={style.logo}>
-          <h1>
-            <Link to={"/"}>H!</Link>
-          </h1>
+
+
+        <section className={style.logo}>
+          <Link to={"/"}>
+            <h1>H!</h1>
+          </Link>
+
           <span>Campo Rubiales</span>
-        </div>
+        </section>
 
-        <div className={style.searchBar}>
-          <input type="search" />
-          <div>
-            <button type="submit">Buscar</button>
-          </div>
-        </div>
+      
 
-        <div className={style.account}>
+        <section className={style.account}>
           <div className={style.accountButton}>
             <Link to={"/login"} onClick={closeSession}>
               {isLogin ? "Salir" : "Iniciar Sesion"}
@@ -36,7 +34,9 @@ const nav = () => {
               <Link to={"/login"}>?</Link>
             )}
           </div>
-        </div>
+        </section>
+
+
       </nav>
     </div>
   );

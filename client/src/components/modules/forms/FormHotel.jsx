@@ -154,7 +154,7 @@ const AddHotelForm = () => {
                   required
                 />
               </label>
-<br />
+              <br />
               <label>
                 Camas:
                 <input
