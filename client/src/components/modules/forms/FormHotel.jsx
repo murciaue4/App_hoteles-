@@ -39,7 +39,7 @@ const AddHotelForm = () => {
 
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : value
     }));
   };
 
@@ -102,6 +102,7 @@ const AddHotelForm = () => {
               <br />
               <label>
                 Tipo:
+                <br />
                 <select
                   name="type"
                   value={formData.type}
@@ -116,16 +117,6 @@ const AddHotelForm = () => {
               </label>
               <br />
               <label>
-                Nombre:
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChangeForms}
-                  required
-                />
-              </label>
-              <label>
                 Ubicación:
                 <br />
                 <select
@@ -135,18 +126,32 @@ const AddHotelForm = () => {
                   required
                 >
                   <option value="">Seleccione una ubicaion</option>
-                  <option value="El Porvenir">El Porvenir</option>
-                  <option value="B. Aires">B. Aires</option>
-                  <option value="S. Helena">S. Helena</option>
-                  <option value="El Oasis">El Oasis</option>
-                  <option value="Cuerna Vaca">Cuerna Vaca</option>
-                  <option value="Pto. Gaitan">Pto. Gaitan</option>
+                  <option value="el porvenir">El Porvenir</option>
+                  <option value="buenos aires">Buenos Aires</option>
+                  <option value="santa helena">Santa Helena</option>
+                  <option value="el oasis">El Oasis</option>
+                  <option value="cuerna vaca">Cuerna Vaca</option>
+                  <option value="puerto gaitan">Pto. Gaitan</option>
                 </select>
               </label>
               <br />
               <label>
-                Capacidad:
+                Nombre:
+                <br />
                 <input
+                className={style.input}
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChangeForms}
+                  required
+                />
+              </label>
+              <br />
+              <label>
+                Capacidad total:
+                <input
+                className={style.input}
                   type="number"
                   name="capacity"
                   value={formData.capacity}
@@ -156,19 +161,25 @@ const AddHotelForm = () => {
               </label>
               <br />
               <label>
-                Camas:
-                <input
-                  type="number"
+                Camas por Habitacion:
+                <br />
+                <select
                   name="camas"
                   value={formData.camas}
                   onChange={handleChangeForms}
                   required
-                />
+                >
+                  <option value="1">1 cama</option>
+                  <option value="2">2 camas</option>
+                  <option value="3">3 camas</option>
+                  <option value="4">4 camas</option>
+                </select>
               </label>
               <br />
               <label>
                 Precio por Habitación:
                 <input
+                className={style.input}
                   type="number"
                   name="precio_por_habitacion"
                   value={formData.precio_por_habitacion}
@@ -185,70 +196,76 @@ const AddHotelForm = () => {
             <div className={style.checks}>
               <section>
                 <label>
-                  Baño Privado:
                   <input
+                  className={style.checkbox}
                     type="checkbox"
                     name="baño_privado"
                     checked={formData.baño_privado}
                     onChange={handleChangeForms}
-                  />
+                  />{" "}
+                  Baño Privado
                 </label>
                 <br />
 
                 <label>
-                  WiFi:
                   <input
+                   className={style.checkbox}
                     type="checkbox"
                     name="wifi"
                     checked={formData.wifi}
                     onChange={handleChangeForms}
-                  />
+                  />{" "}
+                  WiFi
                 </label>
                 <br />
 
                 <label>
-                  Restaurante:
                   <input
+                   className={style.checkbox}
                     type="checkbox"
                     name="restaurant"
                     checked={formData.restaurant}
                     onChange={handleChangeForms}
-                  />
+                  />{" "}
+                  Restaurante
                 </label>
                 <br />
               </section>
 
               <section>
                 <label>
-                  Lavandería:
                   <input
+                   className={style.checkbox}
                     type="checkbox"
                     name="lavanderia"
                     checked={formData.lavanderia}
                     onChange={handleChangeForms}
-                  />
+                  />{" "}
+                  Lavandería
                 </label>
                 <br />
 
                 <label>
-                  Aire acondicionado:
                   <input
+                   className={style.checkbox}
                     type="checkbox"
                     name="aire_acondicionado"
                     checked={formData.aire_acondicionado}
                     onChange={handleChangeForms}
-                  />
+                  />{" "}
+                  Aire acondicionado
                 </label>
                 <br />
 
                 <label>
-                  Parqueadero:
                   <input
+                   className={style.checkbox}
                     type="checkbox"
                     name="parqueadero"
                     checked={formData.parqueadero}
                     onChange={handleChangeForms}
-                  />
+                  />{" "}
+                  Parqueadero
                 </label>
                 <br />
               </section>

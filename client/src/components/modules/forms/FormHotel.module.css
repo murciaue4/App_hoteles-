@@ -12,7 +12,7 @@ h1 {
 }
 
 .formHotel {
-    border: rgb(57, 55, 55) 3px solid;
+    box-shadow: 0px 1px 5px 0.5px rgb(106, 106, 106);
     width: 400px;
     height: auto;
     margin-block: 20px;
@@ -20,11 +20,11 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 23px 23px 23px 0px;
+    border-radius: 23px;
 }
 
 .formHotel label {
-    font-weight: 400;
+    font-weight: bold;
 }
 
 .formHotel form {
@@ -38,7 +38,7 @@ h1 {
 }
 
 .formHotel form .checks {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -52,35 +52,34 @@ h1 {
 
 
 .formHotel .divButton {
-    width: 100%;
-    padding: 5px;
-    text-align: center;
-    border-radius: 3px;
-    background-color: rgb(20, 20, 20);
-    color: #ecb365;
+    width: 90%;  
 }
 
 .formHotel .divButton button {
-    width: 200px;
+    width: 100%;
     padding: 5px;
-    border-radius: 3px;
-    background-color: rgb(20, 20, 20);
-    color: #ecb365;
+    border-radius: 8px;
+    background-color: #3498db;
+    color:white;
+    font-size: larger;
 }
 
-.formHotel input {
+.formHotel .input {
     outline: none;
     border: none;
     margin-left: 4px;
     border-bottom: 1px rgb(165, 165, 165) solid;
     margin-bottom: 10px;
-    font-size: larger;
-    font-weight: 700;
+    font-size: medium;
+    font-weight: normal;
+    width: 100%;
 }
 
 .formHotel select {
-    font-size: larger;
-    font-weight: 700;
+    font-size: medium;
+    font-weight: normal;
+    width: 100%;
+    border-bottom: solid 1px black;
 }
 
 .formHotel .inputsSession {

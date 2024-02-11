@@ -2,6 +2,7 @@ import style from "./Nav.module.css";
 import { Link } from "react-router-dom";
 import { loginContext } from "../../../context/loginContext";
 import { useContext } from "react";
+import searchIconW from "../../../static/searchIconW.svg";
 
 const nav = () => {
   const { isLogin, user, closeSession } = useContext(loginContext);
@@ -15,6 +16,7 @@ const nav = () => {
           <Link to={"/"}>
             <h1>H!</h1>
           </Link>
+          
 
           <span>Campo Rubiales</span>
         </section>

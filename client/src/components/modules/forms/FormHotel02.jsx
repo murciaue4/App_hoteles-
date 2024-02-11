@@ -55,34 +55,35 @@ const AddHotelForm02 = (props) => {
   };
 
   const handleChangeForms = (e) => {
-    const {value } = e.target;
-    setFormData02({ id : idInserted,
-      description: value });
-    console.log('formData02 en el front: ', formData02);
+    const { value } = e.target;
+    setFormData02({ id: idInserted, description: value });
+    console.log("formData02 en el front: ", formData02);
   };
 
   const sendUpData = async (e) => {
     e.preventDefault();
-  
-    console.log('formData02 antes de enviar:', formData02);
-  
+
+    console.log("formData02 antes de enviar:", formData02);
+
     const config = {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: token,
       },
       body: JSON.stringify(formData02),
     };
-  
+
     try {
-      const response = await fetch(`http://localhost:3333/user/hoteles/${idInserted}`, config);
+      const response = await fetch(
+        `http://localhost:3333/user/hoteles/${idInserted}`,
+        config
+      );
       const data = await response.json();
-      
-      console.log('Respuesta de fetch en FormHotel02:', data);
-     
+
+      console.log("Respuesta de fetch en FormHotel02:", data);
     } catch (error) {
-      handleSetErr(error.message || 'Error en la solicitud.');
+      handleSetErr(error.message || "Error en la solicitud.");
     }
   };
 
@@ -96,7 +97,7 @@ const AddHotelForm02 = (props) => {
           <p>
             <b> Agrega imagenes de tu hotel</b> ({" "}
             <i>
-              recurda publicar imagenes de buena calidad y que correspondan al
+              Recuerda publicar imagenes de buena calidad y que correspondan al
               inmueble que estas publicando
             </i>{" "}
             )
@@ -106,7 +107,6 @@ const AddHotelForm02 = (props) => {
           <label className={isLoaded ? style.label : style.label2}>
             + Selecionar una imagen
             <input
-              
               className={style.input}
               type="file"
               name="image"
@@ -122,24 +122,24 @@ const AddHotelForm02 = (props) => {
           </span>
           <br />
         </form>
-        <form  onSubmit={sendUpData}>
-          <label className={style.descLabel}>
-            Descripcion:
-            <textarea
-              className={style.descInput}
-              name="description"
-              value={formData02.description}
-              onChange={handleChangeForms}
-              required
-            />
-          </label>
+        <form onSubmit={sendUpData}>
+          <label className={style.descLabel}>Descripcion:</label>
           <span>
-            <b>*</b> Escribe una descripcion detallada de tu hotel, las personas
+            (Escribe una descripcion detallada de tu hotel, las personas
             veran esto en los resultados de sus busquedas, por favor utiliza
-            bien este espacio.
+            bien este espacio).
           </span>
           <br />
-
+          <textarea
+            className={style.descInput}
+            name="description"
+            value={formData02.description}
+            onChange={handleChangeForms}
+            required
+          />
+          <span className="w-80">{formData02.description.length}/500</span>
+          
+          <br />
           <div className={style.divButton}>
             <button type="submit">Finalizar</button>
           </div>

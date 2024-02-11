@@ -1,15 +1,16 @@
 .hotelCard {
   margin: 10px;
-  width:1000px;
+  width:91.666%;
+  max-width: 1024px;
   height: 160px;
   display: flex;
   flex-direction: row;
-
+  border: none;
   overflow: hidden;
   border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 8px 0px  rgb(199, 196, 196);
   border-radius: 8px;
-  background: #fdfdfd;
+  background: #ffffff;
 }
 
 .imgDiv {
@@ -57,29 +58,21 @@
 }
 
 
-
-
-
-
-
-
-
-
-
 .hotelPrice {
   font-size: 16px;
   color: #333;
   margin-bottom: 10px;
 }
 
-.bookNowBtn2 {
-  background-color: none;
-  color: #535252da;
+.bookNowBtn {
+  background-color: #3498db;
+  color: #ffffffda;
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: bold;
 }
 
 .bookNowBtn:hover {

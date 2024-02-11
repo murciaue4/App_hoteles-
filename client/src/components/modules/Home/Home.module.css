@@ -7,24 +7,28 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 0;
     background: #f3f3f3;
 }
 
 .homeFilters {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     margin-block: 20px;
-    width: 1000px;
-    align-items: start;
+    width: 100%;
+    max-width: 1024px;
+    padding-bottom: 20px;
+    font-size:small;
 }
+
 
 .homeSortBy {
     display: flex;
-    justify-content: start;
-    align-items: start;
-    margin-bottom: 20px;
-    width: 1000px;
+    justify-content: space-between;
+    margin-block: 20px;
+    width: 100%;
+    max-width: 1024px;
+    margin-inline: auto;
 }
 
 .homeFilters .input {
@@ -33,51 +37,55 @@
     font-size: large;
     font-weight: lighter;
     width: 60%;
-   margin-inline: auto;
-   margin-bottom: 4px;
+    margin-inline: auto;
+    margin-bottom: 4px;
     border-radius: 4px;
     border: solid 2px #9a9a9ada;
 }
-.puntuacion{
+
+.puntuacion {
     display: flex;
     width: 100%;
     justify-content: space-between;
     margin-bottom: 27px;
 }
-.puntuacion > div {
-border: solid rgb(108, 109, 109) 1px;
-font-size: medium;
-font-weight: bolder;
-color: rgb(108, 109, 109);
-width: 18%;
-height: 30px;
-border-radius: 10px;
-display: flex;
-justify-content: center;
-align-items: center;
-cursor: pointer;
+
+.puntuacion>div {
+    border: solid rgb(108, 109, 109) 1px;
+    font-size: medium;
+    font-weight: bolder;
+    color: rgb(108, 109, 109);
+    width: 18%;
+    height: 30px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
-.puntuacion > div:hover{
+
+.puntuacion>div:hover {
     background: #3498db;
     border: none;
     color: #f3f3f3;
 }
-.puntuacion > div > img{
+
+.puntuacion>div>img {
     width: 15px;
     height: 15px;
     display: flex;
     margin-left: 5px;
 }
 
-.filtrosPopulares  input{
+.filtrosPopulares input {
     margin-right: 10px;
     cursor: pointer;
 }
 
 .Home {
     height: 100%;
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
 }

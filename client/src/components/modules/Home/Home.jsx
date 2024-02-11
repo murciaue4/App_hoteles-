@@ -54,7 +54,6 @@ const Home = () => {
     searchTerm: "",
     minPrice: "",
     maxPrice: "",
-    location: "",
     wifi: false,
     restaurant: false,
     lavanderia: false,
@@ -63,6 +62,7 @@ const Home = () => {
     type: [],
     minCapacity: "",
     maxCapacity: "",
+    location: [],
   });
 
   // MANEJADOR  DE FILTROS - para actualizar el estado que guarda los terminos de busqueda
@@ -72,6 +72,11 @@ const Home = () => {
         ? filters.type.filter((type) => type !== value)
         : [...filters.type, value];
       setFilters({ ...filters, [filter]: updatedTypes });
+    } else if (filter === "location") {
+      const updatedLocations = filters.location.includes(value)
+        ? filters.location.filter((location) => location !== value)
+        : [...filters.location, value];
+      setFilters({ ...filters, [filter]: updatedLocations });
     } else {
       setFilters({ ...filters, [filter]: value });
     }
@@ -108,6 +113,12 @@ const Home = () => {
       ...{ minCapacity: "", maxCapacity: "" },
     }));
   };
+  const handleResetFilterLocation = () => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...{ location: [] },
+    }));
+  };
 
   //manejadores para cerrar individualmente los desplegables de los filtros desde un boton dentro del mismo desplegable
   const closePricesToggle = (event) => {
@@ -125,6 +136,10 @@ const Home = () => {
   const closeCapcityToggle = (event) => {
     event.stopPropagation();
     setshowCapacity(false);
+  };
+  const closeLocationToggle = (event) => {
+    event.stopPropagation();
+    setshowLocation(false);
   };
 
   // PETICION AL SERVER al montar el componente: res => todos los hoteles
@@ -159,10 +174,6 @@ const Home = () => {
           (!filters.maxPrice ||
             hotel.precio_por_habitacion <= parseInt(filters.maxPrice));
 
-        const locationCriteria =
-          !filters.location ||
-          hotel.location.toLowerCase() === filters.location.toLowerCase();
-
         const wifiCriteria = !filters.wifi || hotel.wifi === filters.wifi;
 
         const restaurantCriteria =
@@ -188,6 +199,9 @@ const Home = () => {
           (!filters.maxCapacity ||
             hotel.capacity <= parseInt(filters.maxCapacity));
 
+        const locationCriteria =
+          !filters.location.length ||
+          filters.location.includes(hotel.location.toLowerCase());
         return (
           nameCriteria &&
           priceCriteria &&
@@ -207,583 +221,693 @@ const Home = () => {
 
   return (
     <div className={style.homeContainer}>
-      <div className={style.homeFilters}>
-        <div className="flex border w-full justify-between my-6">
-          {/* PRECIOS */}
-          <div className="relative  h-auto ">
-            <button onClick={() => handleShowToggle(1)}>
-              <span className="  flex justify-start">
-                <strong>Precio:</strong> por habitación
-              </span>
-              <span className="flex w-60 justify-between border border-black rounded-lg py-1 px-2">
-                <span>{`$${filters.minPrice || "0"} - $${
-                  filters.maxPrice || "1000"
-                }`}</span>
-                <span className="flex flex-col justify-center">
-                  <img src={arrowToggleIcon} alt="*"  className="w-4 h-4" />
-                </span>
-              </span>
-            </button>
-            {!showPrices ? null : (
-              <div className=" absolute top-16 w-72 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
-                <div className="flex flex-col px-6 py-3 w-full">
-                  <strong className="mb-4">Define el rango de precios</strong>
-                  <label
-                    htmlFor="priceMin"
-                    className="flex flex-col w-full font-semibold text-sm text-gray-700"
-                  >
-                    Desde:
-                    <input
-                      className={style.input}
-                      name="priceMin"
-                      type="number"
-                      placeholder="Precio mínimo"
-                      value={filters.minPrice}
-                      onChange={(e) =>
-                        handleFilterChange("minPrice", e.target.value)
-                      }
-                    />
-                  </label>
-                  <label
-                    htmlFor="priceMax"
-                    className="flex flex-col w-full font-semibold text-sm text-gray-700"
-                  >
-                    Hasta:
-                    <input
-                      className={style.input}
-                      name="priceMax"
-                      type="number"
-                      placeholder="Precio máximo"
-                      value={filters.maxPrice}
-                      onChange={(e) =>
-                        handleFilterChange("maxPrice", e.target.value)
-                      }
-                    />
-                  </label>
-                  <div className=" font-light text-xs mt-4">
-                    Los precios no incluyen cargos ni impuestos.
-                  </div>
-                </div>
-                <div className=" border-t-2 py-2">
-                  <section className="flex justify-around">
-                    <button
-                      onClick={handleResetFilterPrice}
-                      style={{
-                        backgroundColor: "none",
-                        color: "#535252da",
-                        padding: "8px 12px",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Desmarcar
-                    </button>
-
-                    <button
-                      onClick={closePricesToggle}
-                      style={{
-                        backgroundColor: "#3498db",
-                        color: "#fff",
-                        padding: "8px 12px",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Aceptar
-                    </button>
-                  </section>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* FILTROS POPULARES */}
-          <div className=" relative">
-            <button onClick={() => handleShowToggle(2)}>
-              <span className="  flex justify-start">
-                <strong>Filtros:</strong>
-              </span>
-              <span className="flex w-40 justify-between border border-black rounded-lg py-1 px-2">
-                <span>Seleccionar</span>
-                <span className="flex flex-col justify-center">
-                  <img src={arrowToggleIcon} alt="*"  className="w-4 h-4" />
-                </span>
-              </span>
-            </button>
-            {!showFiltros ? null : (
-              <div className=" absolute top-16 w-96  p-3 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
-                <section className="flex flex-col">
-                  <strong className="mb-4">Puntuacion del sitio</strong>
-                  <section className={style.puntuacion}>
-                    <div>
-                      0-1 <img className="w-5 h-5" src={svgIcon} alt="*" />
-                    </div>
-                    <div>
-                      2 <img className="w-5 h-5" src={svgIcon} alt="*" />
-                    </div>
-                    <div>
-                      3 <img className="w-5 h-5" src={svgIcon} alt="*" />
-                    </div>
-                    <div>
-                      4 <img className="w-5 h-5" src={svgIcon} alt="*" />
-                    </div>
-                    <div>
-                      5 <img className="w-5 h-5" src={svgIcon} alt="*" />
-                    </div>
-                  </section>
-                </section>
-                <strong className="mb-4">Filtros populares</strong>
-                <section
-                  className={` ${style.filtrosPopulares} mb-4 flex flex-col font-semibold`}
+      <div className="h-auto w-full flex flex-col  bg-white ">
+        <div className="w-full flex justify-center ">
+          <div className=" w-11/12  flex justify-center my-5">
+            <div className={style.homeFilters}>
+              {/* PRECIOS */}
+              <div className="relative w-2/6 h-auto ">
+                <button
+                  onClick={() => handleShowToggle(1)}
+                  className=" w-11/12"
                 >
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={filters.wifi}
-                      onChange={(e) =>
-                        handleFilterChange("wifi", e.target.checked ? 1 : 0)
-                      }
-                    />
-                    Wifi
-                  </label>
+                  <span className=" flex justify-start">
+                    <strong>Precio:</strong> por habitación
+                  </span>
+                  <span className="flex justify-between border border-black rounded-lg py-1 px-2">
+                    <span>{`$${filters.minPrice || "0"} - $${
+                      filters.maxPrice || "1000"
+                    }`}</span>
+                    <span className="flex flex-col justify-center">
+                      <img
+                        src={arrowToggleIcon}
+                        alt="*"
+                        className={`${
+                          showPrices ? "rotate-180 transition-custom" : null
+                        } w-4 h-4 transition-custom`}
+                      />
+                    </span>
+                  </span>
+                </button>
+                {!showPrices ? null : (
+                  <div className=" absolute top-16 w-72 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
+                    <div className="flex flex-col px-6 py-3 w-full">
+                      <strong className="mb-4">
+                        Define el rango de precios
+                      </strong>
+                      <label
+                        htmlFor="priceMin"
+                        className="flex flex-col w-full font-semibold text-sm text-gray-700"
+                      >
+                        Desde:
+                        <input
+                          className={style.input}
+                          name="priceMin"
+                          type="number"
+                          placeholder="Precio mínimo"
+                          value={filters.minPrice}
+                          onChange={(e) =>
+                            handleFilterChange("minPrice", e.target.value)
+                          }
+                        />
+                      </label>
+                      <label
+                        htmlFor="priceMax"
+                        className="flex flex-col w-full font-semibold text-sm text-gray-700"
+                      >
+                        Hasta:
+                        <input
+                          className={style.input}
+                          name="priceMax"
+                          type="number"
+                          placeholder="Precio máximo"
+                          value={filters.maxPrice}
+                          onChange={(e) =>
+                            handleFilterChange("maxPrice", e.target.value)
+                          }
+                        />
+                      </label>
+                      <div className=" font-light text-xs mt-4">
+                        Los precios no incluyen cargos ni impuestos.
+                      </div>
+                    </div>
+                    <div className=" border-t-2 py-2">
+                      <section className="flex justify-around">
+                        <button
+                          onClick={handleResetFilterPrice}
+                          style={{
+                            backgroundColor: "none",
+                            color: "#535252da",
+                            padding: "8px 12px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Desmarcar
+                        </button>
 
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={filters.restaurant}
-                      onChange={(e) =>
-                        handleFilterChange(
-                          "restaurant",
-                          e.target.checked ? 1 : 0
-                        )
-                      }
-                    />
-                    Restaurante
-                  </label>
-
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={filters.lavanderia}
-                      onChange={(e) =>
-                        handleFilterChange(
-                          "lavanderia",
-                          e.target.checked ? 1 : 0
-                        )
-                      }
-                    />
-                    Lavanderia
-                  </label>
-
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={filters.aire_acondicionado}
-                      onChange={(e) =>
-                        handleFilterChange(
-                          "aire_acondicionado",
-                          e.target.checked ? 1 : 0
-                        )
-                      }
-                    />
-                    Aire acondicionado
-                  </label>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={filters.parqueadero}
-                      onChange={(e) =>
-                        handleFilterChange(
-                          "parqueadero",
-                          e.target.checked ? 1 : 0
-                        )
-                      }
-                    />
-                    Parqueadero
-                  </label>
-                </section>
-                <div className=" border-t-2 py-2">
-                  <section className="flex justify-around">
-                    <button
-                      onClick={handleResetFiltros}
-                      style={{
-                        backgroundColor: "none",
-                        color: "#535252da",
-                        padding: "8px 12px",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Desmarcar
-                    </button>
-
-                    <button
-                      onClick={closeFiltrosToggle}
-                      style={{
-                        backgroundColor: "#3498db",
-                        color: "#fff",
-                        padding: "8px 12px",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Aceptar
-                    </button>
-                  </section>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* TIPO DE PROPIEDAD*/}
-          <div className="relative h-auto">
-            <button onClick={() => handleShowToggle(3)}>
-              <span className="  flex justify-start">
-                <strong>Tipo de propiedad:</strong>
-              </span>
-              <span className="flex w-40 justify-between border border-black rounded-lg py-1 px-2">
-                <span>Seleccionar</span>
-                <span className="flex flex-col justify-center">
-                  <img src={arrowToggleIcon} alt="*"  className="w-4 h-4" />
-                </span>
-              </span>
-            </button>
-            {!showType ? null : (
-              <div className="absolute">
-                <div className=" absolute top-2 w-80  p-3 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
-                  <strong className="mb-4">Tipos de propiedades</strong>
-                  <div
-                    className={` ${style.filtrosPopulares} mb-4 flex flex-col font-semibold`}
-                  >
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="type"
-                        value=""
-                        checked={filters.type.length === 0}
-                        onChange={() => handleFilterChange("type", "")}
-                      />
-                      Todos
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="type"
-                        value="hotel"
-                        checked={filters.type.includes("hotel")}
-                        onChange={() => handleFilterChange("type", "hotel")}
-                      />
-                      Hotel
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="type"
-                        value="casa"
-                        checked={filters.type.includes("casa")}
-                        onChange={() => handleFilterChange("type", "casa")}
-                      />
-                      Casa
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="type"
-                        value="apartamento"
-                        checked={filters.type.includes("apartamento")}
-                        onChange={() =>
-                          handleFilterChange("type", "apartamento")
-                        }
-                      />
-                      Apartamento
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="type"
-                        value="campamento"
-                        checked={filters.type.includes("campamento")}
-                        onChange={() =>
-                          handleFilterChange("type", "campamento")
-                        }
-                      />
-                      Campamento
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="type"
-                        value="hostal"
-                        checked={filters.type.includes("hostal")}
-                        onChange={() => handleFilterChange("type", "hostal")}
-                      />
-                      Hostal
-                    </label>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="type"
-                        value="habitacion"
-                        checked={filters.type.includes("habitacion")}
-                        onChange={() =>
-                          handleFilterChange("type", "habitacion")
-                        }
-                      />
-                      Habitacion
-                    </label>
+                        <button
+                          onClick={closePricesToggle}
+                          style={{
+                            backgroundColor: "#3498db",
+                            color: "#fff",
+                            padding: "8px 12px",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Aceptar
+                        </button>
+                      </section>
+                    </div>
                   </div>
-                  <div className=" border-t-2 py-2">
-                    <section className="flex justify-around">
-                      <button
-                        onClick={handleResetFilterType}
-                        style={{
-                          backgroundColor: "none",
-                          color: "#535252da",
-                          padding: "8px 12px",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Desmarcar
-                      </button>
+                )}
+              </div>
 
-                      <button
-                        onClick={closeTypesToggle}
-                        style={{
-                          backgroundColor: "#3498db",
-                          color: "#fff",
-                          padding: "8px 12px",
-                          border: "none",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Aceptar
-                      </button>
+              {/* FILTROS POPULARES */}
+              <div className=" relative w-1/6">
+                <button onClick={() => handleShowToggle(2)} className="w-11/12">
+                  <span className="  flex justify-start">
+                    <strong>Filtros:</strong>
+                  </span>
+                  <span className="flex w-full justify-between border border-black rounded-lg py-1 px-2">
+                    <span>Elegir</span>
+                    <span className="flex flex-col justify-center">
+                      <img
+                        src={arrowToggleIcon}
+                        alt="*"
+                        className={`${
+                          showFiltros ? "rotate-180 transition-custom" : null
+                        } w-4 h-4 transition-custom`}
+                      />
+                    </span>
+                  </span>
+                </button>
+                {!showFiltros ? null : (
+                  <div className=" absolute top-16 w-96  p-3 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
+                    <section className="flex flex-col">
+                      <strong className="mb-4">Puntuacion del sitio</strong>
+                      <section className={style.puntuacion}>
+                        <div>
+                          0-1 <img className="w-5 h-5" src={svgIcon} alt="*" />
+                        </div>
+                        <div>
+                          2 <img className="w-5 h-5" src={svgIcon} alt="*" />
+                        </div>
+                        <div>
+                          3 <img className="w-5 h-5" src={svgIcon} alt="*" />
+                        </div>
+                        <div>
+                          4 <img className="w-5 h-5" src={svgIcon} alt="*" />
+                        </div>
+                        <div>
+                          5 <img className="w-5 h-5" src={svgIcon} alt="*" />
+                        </div>
+                      </section>
                     </section>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* CAPACIDAD */}
-          <div className="relative">
-            <button onClick={() => handleShowToggle(4)} >
-              <span className="  flex justify-start">
-                <strong>Capacidad total:</strong>
-              </span>
-              <span className="flex w-40 justify-between border border-black rounded-lg py-1 px-2">
-                <span>Seleccionar</span>
-                <span className="flex flex-col justify-center">
-                  <img src={arrowToggleIcon} alt="*"  className="w-4 h-4" />
-                </span>
-              </span>
-            </button>
-            {!showCapacity ? null : (
-              <div className=" absolute top-16 w-72 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
-                <div className="flex flex-col px-6 py-3 w-full">
-                  <strong className="mb-4">Define la capacidad</strong>
-                  <label
-                    htmlFor="capacityMin"
-                    className="flex flex-col w-full font-semibold text-sm text-gray-700"
-                  >
-                    Mínima capacidad:
-                    <input
-                      className={style.input}
-                      name="capacityMin"
-                      type="number"
-                      placeholder="Capacidad mínima"
-                      value={filters.minCapacity}
-                      onChange={(e) =>
-                        handleFilterChange("minCapacity", e.target.value)
-                      }
-                    />
-                  </label>
-                  <label
-                    htmlFor="capacityMax"
-                    className="flex flex-col w-full font-semibold text-sm text-gray-700"
-                  >
-                    Máxima capacidad:
-                    <input
-                      className={style.input}
-                      name="capacityMax"
-                      type="number"
-                      placeholder="Capacidad máxima"
-                      value={filters.maxCapacity}
-                      onChange={(e) =>
-                        handleFilterChange("maxCapacity", e.target.value)
-                      }
-                    />
-                  </label>
-                  <div className=" font-light text-xs mt-4">
-                    La capacidad se refiere al número de personas permitidas.
-                  </div>
-                </div>
-                <div className=" border-t-2 py-2">
-                  <section className="flex justify-around">
-                    <button
-                      onClick={handleResetFilterCapacity}
-                      style={{
-                        backgroundColor: "none",
-                        color: "#535252da",
-                        padding: "8px 12px",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                      }}
+                    <strong className="mb-4">Filtros populares</strong>
+                    <section
+                      className={` ${style.filtrosPopulares} mb-4 flex flex-col font-semibold`}
                     >
-                      Desmarcar
-                    </button>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={filters.wifi}
+                          onChange={(e) =>
+                            handleFilterChange("wifi", e.target.checked ? 1 : 0)
+                          }
+                        />
+                        Wifi
+                      </label>
 
-                    <button
-                      onClick={closeCapcityToggle}
-                      style={{
-                        backgroundColor: "#3498db",
-                        color: "#fff",
-                        padding: "8px 12px",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Aceptar
-                    </button>
-                  </section>
-                </div>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={filters.restaurant}
+                          onChange={(e) =>
+                            handleFilterChange(
+                              "restaurant",
+                              e.target.checked ? 1 : 0
+                            )
+                          }
+                        />
+                        Restaurante
+                      </label>
+
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={filters.lavanderia}
+                          onChange={(e) =>
+                            handleFilterChange(
+                              "lavanderia",
+                              e.target.checked ? 1 : 0
+                            )
+                          }
+                        />
+                        Lavanderia
+                      </label>
+
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={filters.aire_acondicionado}
+                          onChange={(e) =>
+                            handleFilterChange(
+                              "aire_acondicionado",
+                              e.target.checked ? 1 : 0
+                            )
+                          }
+                        />
+                        Aire acondicionado
+                      </label>
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={filters.parqueadero}
+                          onChange={(e) =>
+                            handleFilterChange(
+                              "parqueadero",
+                              e.target.checked ? 1 : 0
+                            )
+                          }
+                        />
+                        Parqueadero
+                      </label>
+                    </section>
+                    <div className=" border-t-2 py-2">
+                      <section className="flex justify-around">
+                        <button
+                          onClick={handleResetFiltros}
+                          style={{
+                            backgroundColor: "none",
+                            color: "#535252da",
+                            padding: "8px 12px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Desmarcar
+                        </button>
+
+                        <button
+                          onClick={closeFiltrosToggle}
+                          style={{
+                            backgroundColor: "#3498db",
+                            color: "#fff",
+                            padding: "8px 12px",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Aceptar
+                        </button>
+                      </section>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* UBUCACION */}
-          <div>
-            <button>
-              <span className="  flex justify-start">
-                <strong>Ubicación:</strong>
-              </span>
-              <span className="flex w-40 justify-between border border-black rounded-lg py-1 px-2">
-                <span>Todas</span>
-                <span className="flex flex-col justify-center">
-                  <img src={arrowToggleIcon} alt="*"  className="w-4 h-4" />
+              {/* TIPO DE PROPIEDAD*/}
+              <div className="relative w-1/6 h-auto">
+                <button onClick={() => handleShowToggle(3)} className="w-11/12">
+                  <span className="  flex justify-start">
+                    <strong>Tipo:</strong>
+                  </span>
+                  <span className="flex w-full justify-between border border-black rounded-lg py-1 px-2">
+                    <span>Elegir</span>
+                    <span className="flex flex-col justify-center">
+                      <img
+                        src={arrowToggleIcon}
+                        alt="*"
+                        className={`${
+                          showType ? "rotate-180 transition-custom" : null
+                        } w-4 h-4 transition-custom`}
+                      />
+                    </span>
+                  </span>
+                </button>
+                {!showType ? null : (
+                  <div className="absolute">
+                    <div className=" absolute top-2 w-80  p-3 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
+                      <strong className="mb-4">Tipos de propiedades</strong>
+                      <div
+                        className={` ${style.filtrosPopulares} mb-4 flex flex-col font-semibold`}
+                      >
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="type"
+                            value=""
+                            checked={filters.type.length === 0}
+                            onChange={() => handleFilterChange("type", "")}
+                          />
+                          Todos
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="type"
+                            value="hotel"
+                            checked={filters.type.includes("hotel")}
+                            onChange={() => handleFilterChange("type", "hotel")}
+                          />
+                          Hotel
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="type"
+                            value="casa"
+                            checked={filters.type.includes("casa")}
+                            onChange={() => handleFilterChange("type", "casa")}
+                          />
+                          Casa
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="type"
+                            value="apartamento"
+                            checked={filters.type.includes("apartamento")}
+                            onChange={() =>
+                              handleFilterChange("type", "apartamento")
+                            }
+                          />
+                          Apartamento
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="type"
+                            value="campamento"
+                            checked={filters.type.includes("campamento")}
+                            onChange={() =>
+                              handleFilterChange("type", "campamento")
+                            }
+                          />
+                          Campamento
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="type"
+                            value="hostal"
+                            checked={filters.type.includes("hostal")}
+                            onChange={() =>
+                              handleFilterChange("type", "hostal")
+                            }
+                          />
+                          Hostal
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="type"
+                            value="habitacion"
+                            checked={filters.type.includes("habitacion")}
+                            onChange={() =>
+                              handleFilterChange("type", "habitacion")
+                            }
+                          />
+                          Habitacion
+                        </label>
+                      </div>
+                      <div className=" border-t-2 py-2">
+                        <section className="flex justify-around">
+                          <button
+                            onClick={handleResetFilterType}
+                            style={{
+                              backgroundColor: "none",
+                              color: "#535252da",
+                              padding: "8px 12px",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Desmarcar
+                          </button>
+
+                          <button
+                            onClick={closeTypesToggle}
+                            style={{
+                              backgroundColor: "#3498db",
+                              color: "#fff",
+                              padding: "8px 12px",
+                              border: "none",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Aceptar
+                          </button>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* CAPACIDAD */}
+              <div className="relative w-1/6">
+                <button onClick={() => handleShowToggle(4)} className="w-11/12">
+                  <span className="  flex justify-start">
+                    <strong>Capacidad:</strong>
+                  </span>
+                  <span className="flex w-full justify-between border border-black rounded-lg py-1 px-2">
+                    <span>Elegir</span>
+                    <span className="flex flex-col justify-center">
+                      <img
+                        src={arrowToggleIcon}
+                        alt="*"
+                        className={`${
+                          showCapacity ? "rotate-180 transition-custom" : null
+                        } w-4 h-4 transition-custom`}
+                      />
+                    </span>
+                  </span>
+                </button>
+                {!showCapacity ? null : (
+                  <div className=" absolute top-16 -right-0 w-72 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
+                    <div className="flex flex-col px-6 py-3 w-full">
+                      <strong className="mb-4">Define la capacidad</strong>
+                      <label
+                        htmlFor="capacityMin"
+                        className="flex flex-col w-full font-semibold text-sm text-gray-700"
+                      >
+                        Mínima capacidad:
+                        <input
+                          className={style.input}
+                          name="capacityMin"
+                          type="number"
+                          placeholder="Capacidad mínima"
+                          value={filters.minCapacity}
+                          onChange={(e) =>
+                            handleFilterChange("minCapacity", e.target.value)
+                          }
+                        />
+                      </label>
+                      <label
+                        htmlFor="capacityMax"
+                        className="flex flex-col w-full font-semibold text-sm text-gray-700"
+                      >
+                        Máxima capacidad:
+                        <input
+                          className={style.input}
+                          name="capacityMax"
+                          type="number"
+                          placeholder="Capacidad máxima"
+                          value={filters.maxCapacity}
+                          onChange={(e) =>
+                            handleFilterChange("maxCapacity", e.target.value)
+                          }
+                        />
+                      </label>
+                      <div className=" font-light text-xs mt-4">
+                        La capacidad se refiere al número de personas
+                        permitidas.
+                      </div>
+                    </div>
+                    <div className=" border-t-2 py-2">
+                      <section className="flex justify-around">
+                        <button
+                          onClick={handleResetFilterCapacity}
+                          style={{
+                            backgroundColor: "none",
+                            color: "#535252da",
+                            padding: "8px 12px",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Desmarcar
+                        </button>
+
+                        <button
+                          onClick={closeCapcityToggle}
+                          style={{
+                            backgroundColor: "#3498db",
+                            color: "#fff",
+                            padding: "8px 12px",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Aceptar
+                        </button>
+                      </section>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* UBUCACION */}
+              <div className="relative w-1/6">
+                <button onClick={() => handleShowToggle(5)} className="w-full">
+                  <span className="  flex justify-start">
+                    <strong>Ubicación:</strong>
+                  </span>
+                  <span className="flex w-full justify-between border border-black rounded-lg py-1 px-2">
+                    <span>Todas</span>
+                    <span className="flex flex-col justify-center">
+                      <img
+                        src={arrowToggleIcon}
+                        alt="*"
+                        className={`${
+                          showLocation ? "rotate-180 transition-custom" : null
+                        } w-4 h-4 transition-custom`}
+                      />
+                    </span>
+                  </span>
+                </button>
+                {!showLocation ? null : (
+                  <div className="absolute">
+                    <div className=" absolute top-2 -right-40 w-80  p-3 border flex flex-col text-start  bg-white shadow-sm rounded-md shadow-black">
+                      <strong className="mb-4">Ubicaciones</strong>
+                      <div
+                        className={` ${style.filtrosPopulares} mb-4 flex flex-col font-semibold`}
+                      >
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="location"
+                            value=""
+                            checked={filters.location.length === 0}
+                            onChange={() => handleFilterChange("location", "")}
+                          />
+                          Todos
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="location"
+                            value="el porvenir"
+                            checked={filters.location.includes("el porvenir")}
+                            onChange={() =>
+                              handleFilterChange("location", "el porvenir")
+                            }
+                          />
+                          El Porvenir
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="location"
+                            value="buenos aires"
+                            checked={filters.location.includes("buenos aires")}
+                            onChange={() =>
+                              handleFilterChange("location", "buenos aires")
+                            }
+                          />
+                          Buenos Aires
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="location"
+                            value="santa helena"
+                            checked={filters.location.includes("santa helena")}
+                            onChange={() =>
+                              handleFilterChange("location", "santa helena")
+                            }
+                          />
+                          Santa Helena
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="location"
+                            value="el oasis"
+                            checked={filters.location.includes("el oasis")}
+                            onChange={() =>
+                              handleFilterChange("location", "el oasis")
+                            }
+                          />
+                          El Oasis
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="location"
+                            value="cuerna vaca"
+                            checked={filters.location.includes("cuerna vaca")}
+                            onChange={() =>
+                              handleFilterChange("location", "cuerna vaca")
+                            }
+                          />
+                          Cuerna Vaca
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="location"
+                            value="puerto gaitan"
+                            checked={filters.location.includes("puerto gaitan")}
+                            onChange={() =>
+                              handleFilterChange("location", "puerto gaitan")
+                            }
+                          />
+                          Pto. Gaitán
+                        </label>
+                      </div>
+                      <div className=" border-t-2 py-2">
+                        <section className="flex justify-around">
+                          <button
+                            onClick={handleResetFilterLocation}
+                            style={{
+                              backgroundColor: "none",
+                              color: "#535252da",
+                              padding: "8px 12px",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Desmarcar
+                          </button>
+
+                          <button
+                            onClick={closeLocationToggle}
+                            style={{
+                              backgroundColor: "#3498db",
+                              color: "#fff",
+                              padding: "8px 12px",
+                              border: "none",
+                              borderRadius: "4px",
+                              cursor: "pointer",
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Aceptar
+                          </button>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={style.Home}>
+        <div className="w-full flex justify-center">
+          <div className="w-11/12 flex justify-between ">
+            <div className={style.homeSortBy}>
+              <button>
+                <span className="flex ">
+                  <strong className="mr-2 mt-1">Ordenar por</strong>
+                  <span className="flex w-60 justify-between border border-black rounded-lg py-1 px-2">
+                    <span>Precio</span>
+                    <span className="flex flex-col justify-center">
+                      <img
+                        src={arrowToggleIcon}
+                        alt="*"
+                        className={`${
+                          showLocation ? "rotate-180 transition-custom" : null
+                        } w-4 h-4 transition-custom`}
+                      />
+                    </span>
+                  </span>
                 </span>
-              </span>
-            </button>
+              </button>
+              <div className={style.homeTOtalFound}><strong>{` ${filteredHotels.length}`}</strong> Hoteles encontrados  </div>
+            <div className={style.homeMapsLocation}>espacio para el mapa</div>
+            </div>
           </div>
         </div>
 
-        {/* 
-
-        <input
-                    type="text"
-                    placeholder="Buscar por nombre"
-                    value={filters.searchTerm}
-                    onChange={(e) =>
-                      handleFilterChange("searchTerm", e.target.value)
-                    }
-                  />
-
-
-        <label>
-          <select
-            name="location"
-            value={filters.location}
-            onChange={(e) => handleFilterChange("location", e.target.value)}
-          >
-            <option value="">Ubicacion</option>
-            <option value="El Porvenir">El Porvenir</option>
-            <option value="B. Aires">B. Aires</option>
-            <option value="S. Helena">S. Helena</option>
-            <option value="El Oasis">El Oasis</option>
-            <option value="Cuerna Vaca">Cuerna Vaca</option>
-            <option value="Pto. Gaitan">Pto. Gaitan</option>
-          </select>
-        </label>
-
-
-
-        <label>
-          <select
-            name="type"
-            value={filters.type}
-            onChange={(e) => handleFilterChange("type", e.target.value)}
-          >
-            <option value="">Todas</option>
-            <option value="Hotel">Hotel</option>
-            <option value="Casa">Casa</option>
-            <option value="Apartamento">Apartamento</option>
-            <option value="Campamento">Campamento</option>
-            <option value="Hostal">Hostal</option>
-            <option value="Habitacion">Habitacion</option>
-          </select>
-        </label>
-
-
-        <label>
-          <input
-            type="checkbox"
-            checked={filters.parqueadero}
-            onChange={(e) =>
-              handleFilterChange("parqueadero", e.target.checked ? 1 : 0)
-            }
-          />
-          Tiene Parqueadero
-        </label> */}
-      </div>
-
-      <div className={style.homeSortBy}>
-        <div>
-          <button>
-            <span className="flex ">
-              <strong className="mr-2 mt-1">Ordenar por</strong>
-              <span className="flex w-60 justify-between border border-black rounded-lg py-1 px-2">
-                <span>Precio</span>
-                <span className="">
-                  <svg
-                    className="w-4 h-4 flex justify-center align-middle"
-                    id="Capa_1"
-                    data-name="Capa 1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 87.08 49.65"
-                  >
-                    <path
-                      d="M54.34,73.06,91.78,35.62c5.46-5.47-3-13.95-8.49-8.48L45.85,64.57c-5.46,5.47,3,14,8.49,8.49Z"
-                      transform="translate(-6.46 -25.18)"
-                    />
-                    <path
-                      d="M54.34,64.57,16.71,26.94c-5.47-5.47-14,3-8.49,8.49L45.85,73.06c5.47,5.47,14-3,8.49-8.49Z"
-                      transform="translate(-6.46 -25.18)"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </span>
-          </button>
+        <div className=" contenedor-de-cards w-full py-5 flex flex-col justify-center">
+          <ol className="w-full flex flex-col justify-center">
+            {filteredHotels.map((el) => {
+              console.log(el);
+              return <CardHotel hotel={el} key={el.id} />;
+            })}
+          </ol>
         </div>
       </div>
-
-      <ol className={style.Home}>
-        {filteredHotels.map((el) => {
-          console.log(el);
-          return <CardHotel hotel={el} key={el.id} />;
-        })}
-      </ol>
     </div>
   );
 };
