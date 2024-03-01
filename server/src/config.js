@@ -5,9 +5,9 @@ module.exports = {
     db: {
       host: process.env.DB_HOST, 
       port: process.env.DB_PORT,
-      database: process.env.DB_DATABASE || 'my_db',
-      user: process.env.DB_USERNAME || 'root',
-      password: process.env.DB_PASSWORD || '72420'
+      database: process.env.DB_DATABASE,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD
     },
     jwt: {
       secret: process.env.JET_SECRET || 'nota secreta' 

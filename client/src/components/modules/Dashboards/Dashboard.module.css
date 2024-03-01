@@ -5,6 +5,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     
 }
 
@@ -12,20 +13,21 @@
 
 .Dashboard .banner {
     border-bottom: solid 1px;
-    height: 250px;
+    height: 100%;
+    width: 100%;
+    max-width: 1024px;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-end;
+    justify-content: space-between;
     background-color: #04293A;
+    padding: 15px;
 }
 
 .Dashboard .banner button {
-    margin-right: 10px;
-    margin-top: 10px;
     box-shadow: 0 0 3px rgb(255, 255, 255);
     height: 45px;
     width: 45px;
+    margin-top: 10px;
     border-radius: 50%;
     background-color: black;
     color: white;
@@ -36,11 +38,9 @@
 .photo {
     box-shadow: 0px 0px 2px black;
     width: 150px;
-    height: 160px;
+    height: 150px;
     border-radius: 50%;
-    position: absolute;
-    top: 150px;
-    left: 10px;
+    
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -63,17 +63,14 @@
 }
 
 .Dashboard .banner h1 {
+    margin: 0;
     color: white;
-    position: absolute;
-    top: 160px;
-    left: 180px;
+    
 }
 
 .Dashboard .banner h4 {
     color: white;
-    position: absolute;
-    top: 220px;
-    left: 180px;
+    
 }
 
 .body {
@@ -81,30 +78,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    margin-inline: 10px;
-}
-.body .titles{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: flex-start;
     width: 100%;
-    height: 40px;
-    margin-top: 10px;
-  
-    
+    max-width: 1024px;
 }
 
-.body .titlesHover{
-     display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: flex-start;
-    width: 100%;
-    height: 40px;
-    margin-top: 10px;
-}
 .body .titlesHover h1{
     padding: 0;
     height: 100%;
@@ -206,6 +183,7 @@ height: 30px;
     box-shadow: 0 0 2px black;
     padding-block: 20px;
     flex-wrap: wrap;
+   
     
 }
 .bodyOwners .ownerCard{
@@ -294,10 +272,11 @@ height: 30px;
     
     margin-top: 80px;
     height: auto;
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: left;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
 
 }
@@ -314,9 +293,9 @@ height: 30px;
 
 .bodyButtons .selection {
     box-shadow: 0 0 2px #064663;
-    height: 80px;
-    width: 80px;
-    border-radius: 50%;
+    height: 150px;
+    width: 300px;
+    border-radius: 20px;
     margin-inline: 10px;
     margin-block: 10px;
     display: grid;

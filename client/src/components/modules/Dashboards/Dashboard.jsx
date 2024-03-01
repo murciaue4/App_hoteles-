@@ -7,15 +7,12 @@ import { Link, NavLink } from "react-router-dom";
 import OwnerCard from "./CardOwner";
 
 const Dashboard = () => {
- 
   const { user, closeSession, token } = useContext(loginContext);
   const [err, setErr] = useState(false);
   const [dataUser, setDtaUser] = useState();
   const [dataOwner, setDataOwner] = useState(null);
   const [showOwner, setShowOwner] = useState(false);
   const [showFavourites, setShowFavourites] = useState(false);
-
-
 
   const ownerHandleShow = () => {
     setShowOwner(!showOwner);
@@ -61,22 +58,29 @@ const Dashboard = () => {
 
   return (
     <div className={style.Dashboard}>
-      <div className={style.banner}>
-        <button>f</button>
-        <NavLink to={"/"}>
-          <button>X</button>
-        </NavLink>
-        <h1>{`Hola, ${dataUser ? dataUser["name"] : "null"}`}</h1>
-        <h4>{`${dataUser ? "@" + user["username"] : "null"}`}</h4>
-        <div className={style.photo}>
-          <button className={style.button}>+</button>
+      <section className="w-full h-64 flex justify-center">
+        <div className={style.banner}>
+          <div className="flex flex-row justify-center items-center">
+            <div className={style.photo}>
+              <button className={style.button}>+</button>
+            </div>
+            <span className="mx-4">
+              <h1>{`Hola, ${dataUser ? dataUser["name"] : "null"}`}</h1>
+              <h4>{`${dataUser ? "@" + user["username"] : "null"}`}</h4>
+            </span>
+          </div>
+
+          <div className={`h-full flex flex-col justify-center `}>
+            <button>f</button>
+            <button>X</button>
+          </div>
         </div>
-      </div>
+      </section>
 
       <div className={style.body}>
         <div className={style.bodySearchButton}>
           <button>
-            <Link to={"/"}>Inicio</Link>
+            <Link to={"/"}>Ir al buscador</Link>
           </button>
         </div>
 
@@ -125,53 +129,45 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className={!showOwner ? style.titles : style.titlesHover}>
-          <h1 onClick={ownerHandleShow}>Propiedades</h1>
-        </div>
-        {showOwner && dataOwner ? (
-        <div className={style.bodyOwners}>
-          {dataOwner.map((owner, index) => (
-            <OwnerCard key={index} owner={owner} />
-          ))}
-        </div>
-      ) : null}
+        <section className="w-full flex flex-row justify-center items-center ">
+          <div className={style.bodyButtons}>
+            <div className={style.selectionBox}>
+              <div onClick={ownerHandleShow} className={style.selection}>
+                Mis propiedades
+              </div>
+            </div>
+            <div className={style.selectionBox}>
+              <Link to={"/hoteles/post"}>
+                <div className={style.selection}>Publicar</div>
+              </Link>
+            </div>
+            <div className={style.selectionBox}>
+              <div className={style.selection}>Reservas</div>
+            </div>
+            <div className={style.selectionBox}>
+              <div className={style.selection}>Suscribciones</div>
+            </div>
+            <div className={style.selectionBox}>
+              <div className={style.selection}>Editar perfil</div>
+            </div>
+            <div className={style.selectionBox}>
+              <div className={style.selection}> Ajustes</div>
+            </div>
+          </div>
+        </section>
 
-        <div className={!showFavourites ? style.titles : style.titlesHover}>
-          <h1 onClick={favouritesHandleShow}>favoritos</h1>
-        </div>
+        {showOwner && dataOwner ? (
+          <div className=" text-center">
+            <h2>Mis propiedades</h2>
+            <div className={style.bodyOwners}>
+              {dataOwner.map((owner, index) => (
+                <OwnerCard key={index} owner={owner} />
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         {/* espacio para agregar la logica de los favoritos PENDIENTE PUES NEA */}
-
-        <div className={style.bodyButtons}>
-          <div className={style.selectionBox}>
-            <div onClick={ownerHandleShow} className={style.selection}></div>Mis
-            propiedades
-          </div>
-          <div className={style.selectionBox}>
-            <Link to={"/hoteles/post"}>
-              <div className={style.selection}></div>
-            </Link>
-            <Link to={"/hoteles/post"}>Publicar</Link>
-          </div>
-          <div className={style.selectionBox}>
-            <div className={style.selection}></div>
-            Editar perfil
-          </div>
-          <div className={style.selectionBox}>
-            <div className={style.selection}></div>
-            Ajustes
-          </div>
-          <div className={style.selectionBox}>
-            <div
-              style={{
-                color: "red",
-              }}
-              className={style.selection}
-              onClick={closeSession}
-            ></div>
-            Salir
-          </div>
-        </div>
       </div>
 
       {err.error ? <Errors error={err} /> : null}

@@ -1,16 +1,20 @@
 .Nav {
     width: 100%;
-    height: 80px;
-    background-color: rgb(20, 20, 20);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height:70px;
+   
+   background-color: rgb(255, 255, 255);
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   border-bottom: 1px solid rgb(196, 191, 191);
 }
 
 .Nav nav {
-
-   width: 91.666%;
-   max-width: 1024px;
+    width: 100%;
+    height: 100%;
+    max-width: 1024px;
+   
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -19,7 +23,7 @@
 
 .Nav .logo {
 
-    height: 100%;
+    height: auto;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -32,69 +36,71 @@
     align-items: center;
     justify-content: center;
     margin-right: 10px;
-    color: aquamarine;
+    color: rgb(131, 127, 255);
     font-size: xx-large;
     margin-block: auto;
 }
 
 .Nav .logo span {
-    color: #ecb365;
+    color: #000000;
     font-size: x-small;
 
 }
 
 .account {
-    color: #ecb365;
-    position: relative;
+    width: auto;
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    font-size:medium;
 
 }
-
-.accountPhoto {
-    border: solid aquamarine;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    margin-inline: 10px;
-    font-weight:500;
-    font-size: larger;
-    color:#ecb365 ;
-}
-
-.accountButton {
-    font-size: medium;
-}
-
-.searchBar {
-    border: solid #ecb365 1px;
-    width: auto;
-    border-radius: 10px  10px 10px 0;
+.account > button{
+    padding-inline: 20px;
+    height: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
 }
-
-.searchBar input {
-    width: 300px;
-    min-width: 50px;
-    outline-style: none;
-    padding: 3px;
-    border-radius: 10px  0 15px 0 ;
+.account > button:hover{
+    background-color: #f3f3f3;
 }
-.searchBar button {
-   color: #ecb365;
-   font-size: medium;
-   margin-inline: 5px;
-    outline-style: none;
+.accountPhoto {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%; 
+}
+.menuButton{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px;
+    width: auto;
 }
+
+.menuButton > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100;
+}
+.toggleMenu > button{
+    padding-inline: 20px;
+    padding-block: 6px;
+}
+.toggleMenu > button:hover{
+    background: #f3f3f3 ;
+    
+}
+.shadowBox{
+    box-shadow: 0px 4px 18px rgba(0, 0, 0, 0.7);
+}
+
+
 
 @media (max-width: 600px) {
     .Nav{

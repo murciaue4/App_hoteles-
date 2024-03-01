@@ -17,18 +17,38 @@
     margin-block: 20px;
     width: 100%;
     max-width: 1024px;
-    padding-bottom: 20px;
-    font-size:small;
+    font-size: medium;
+
+    
+}
+.filterBar{
+   
+        position: -webkit-sticky; /* Para Safari */
+        position: sticky;
+        top: 0; 
+        z-index: 10;
+      
+      
 }
 
 
 .homeSortBy {
     display: flex;
     justify-content: space-between;
-    margin-block: 20px;
+    align-items: center;
     width: 100%;
     max-width: 1024px;
     margin-inline: auto;
+    margin-top: 8px;
+}
+
+.homeMapsLocation {
+    border: 3px solid white;
+    box-shadow: 0 0 1px 1px rgb(225, 225, 225);
+    padding: 2px;
+    height: 60px;
+    border-radius: 10px;
+
 }
 
 .homeFilters .input {
