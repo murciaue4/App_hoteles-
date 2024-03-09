@@ -60,6 +60,44 @@ const postImage = async (tabla, req, idHotel, idUser) => {
   return results;
 };
 
+const postImgUser = async (tabla, req, idUser) => {
+  const files = req.files; // req.files contendrá la matriz de archivos si utilizas .array('images')
+
+  const insertImageToTable = async (file) => {
+    
+    // Extraigo los parámetros del archivo que se encuentra en el objeto file de la request y de la base de datos.
+    const name = file.filename;
+    const data = fs.readFileSync(path.join(__dirname, '../public/uploads', file.filename));
+    const type = file.mimetype;
+    const originalName = file.originalname;
+    const dataBody = {
+      name,
+      data,
+      type,
+      originalName,
+    };
+    if (idUser) {
+      dataBody.id_user = idUser
+    }
+
+    const [rows] = await pool.query(`SELECT originalname FROM ${tabla};`);
+
+    // Si es el primer dato, lo insertamos en la base de datos. Si no, filtramos para que no esté duplicado, filtramos por nombre original.
+    if (rows.length === 0 || !rows.some((el) => el.originalname === originalName)) {
+      const result = await pool.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?;`, [dataBody, dataBody]);
+      console.log(result);
+      return result;
+    } else {
+      console.log(`La imagen con nombre ${originalName} ya existe en la base de datos.`);
+      return null;
+    }
+  };
+
+  // Procesar cada archivo en la matriz
+  const results = await Promise.all(files.map(insertImageToTable));
+  return results;
+};
+
 
 
 //****************************UPDATE*******************************/
@@ -135,6 +173,12 @@ const getImagesById = async (tabla, HotelId) => {
   const data = images.map((el) => el.name)
   return data
 };
+const getUserImg = async (tabla, userId) => {
+  const [image] = await pool.query(`SELECT * FROM ${tabla} WHERE id_user = ${userId}`)
+  
+  const data = image[0].name
+  return data
+};
 const getImages = async (tabla) => {
   const [rows] = await pool.query(`SELECT * FROM ${tabla};`)
   await rows.map(el => {
@@ -142,4 +186,4 @@ const getImages = async (tabla) => {
   })
   return await rows.map(el => el)
 };
-module.exports = { updateHotel, allUsers, postImage, getImages, getHotels, getHotel, postUser, getUser, query, getImagesById, postHotel, getHotelByUser, updateUSer , query2};
+module.exports = { updateHotel, allUsers, postImage, postImgUser, getImages, getHotels, getHotel, postUser, getUser, query, getImagesById,getUserImg, postHotel, getHotelByUser, updateUSer , query2};

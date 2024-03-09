@@ -157,6 +157,27 @@ module.exports = function (dbIn) {
             }
         }
     };
+    const postImagesUser = async (req, res) => {
+
+        try {
+            console.log('CONTROLLER USER/ REQ.FILEs: ', req.files);
+            let idUser = req.params.id_user
+            
+
+            const result = await db.postImgUser(T_IMGUS, req, idUser)
+            res.status(200).json(result)
+
+
+        } catch (error) {
+            console.log(error);
+            if (error.errno === 1062) {
+                res.status(300).render('index')
+            } else {
+
+                res.status(500).send('Something went wrong while uploading data');
+            }
+        }
+    };
 
     // *****************UPDATE**************************************
 
@@ -180,7 +201,17 @@ module.exports = function (dbIn) {
         }
     };
     //------------------GET--------------------------------------
-
+    const getImageUser = async (req, res) => {
+        try {
+            const rows = await db.getUserImg(T_IMGUS, req.params.id);
+            const data = rows
+            respuestas.sucess(req, res, data, 200)
+        } catch (error) {
+            console.log(error);
+            
+            respuestas.error(req, res, error, 500)
+        }
+    };
 
     const getAllImages = async (req, res) => {
         try {
@@ -192,6 +223,7 @@ module.exports = function (dbIn) {
             respuestas.error(req, res, error, 500)
         }
     };
+
     const getAllHotels = async (req, res) => {
         try {
 
@@ -230,17 +262,18 @@ module.exports = function (dbIn) {
             return res.status(500).json({ message: 'somethings goes wrong', error })
         }
     };
+
     const getHotelsByUser = async (req, res) => {
         try {
-            const id = req.params.id
-            console.log(id);
+            const id = req.params.id;
             const hoteles = await db.getHotelByUser(T_HOTEL, id);
 
             let images = [];
             let data;
             for (let i = 0; i < hoteles.length; i++) {
-                images = await db.getImagesById(T_IMAGE, id)
                 data = [...hoteles]
+                let idHotel = data[i].id
+                images = await db.getImagesById(T_IMAGE, idHotel)
                 data[i].img = images
             };
            
@@ -251,6 +284,7 @@ module.exports = function (dbIn) {
             respuestas.error(req, res, data, 401)
         }
     };
+
     const getAllUsers = async (req, res) => {
         try {
             const rows = await db.allUsers(T_USERS);
@@ -269,16 +303,18 @@ module.exports = function (dbIn) {
         }
     };
     return {
-        postImages,
         getAllImages,
         getAllHotels,
         getAllUsers,
+        getUsers,
+        getHotelsByUser,
+        getHotels,
+        postImages,
+        postImagesUser,
         postHoteles,
         postUsers,
-        getUsers,
-        getHotels,
-        getHotelsByUser,
-        updateHoteles
+        updateHoteles,
+        getImageUser
 
     }
 };

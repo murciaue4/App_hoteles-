@@ -1,10 +1,12 @@
 import { loginContext } from "./loginContext.js";
 import { useEffect, useState } from "react";
 import { getUserLocation } from "../helpers";
+import axios from "axios";
 
 const GlobalContextProvider = ({ children }) => {
   const [isLoading, setisLoading] = useState(true);
-
+  const [imgUser, setImgUser] = useState(null);
+  
   const getUserCurrentLocation = async () => {
     try {
       const latLng = await getUserLocation();
@@ -42,6 +44,8 @@ const GlobalContextProvider = ({ children }) => {
     }
   };
 
+  
+
   const [userLocation, setuserLocation] = useState(getUserCurrentLocation);
   const [token, setToken] = useState(localTokenExtractor);
   const [isLogin, setIsLogin] = useState(getLocalSession);
@@ -53,6 +57,34 @@ const GlobalContextProvider = ({ children }) => {
     window.localStorage.removeItem("sessionLoginUser");
     setIsLogin(getLocalSession);
   };
+
+  useEffect(() => {
+    const getProfileImgUser = async () => {
+      if (user) {
+        const id = user.id;
+        try {
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+          };
+          const response = await axios.get(
+            `http://localhost:3333/user/img_user/${id}`,
+            config
+          );
+          console.log('data', response.data.body);
+          setImgUser(response.data.body);
+        } catch (error) {
+          console.error("Error fetching user image:", error);
+        }
+      } else {
+        setImgUser(null);
+      }
+    };
+  
+    getProfileImgUser();
+  }, [user, token]); 
 
   //creando un contexto global para los datos de login
 
@@ -67,6 +99,7 @@ const GlobalContextProvider = ({ children }) => {
         closeSession,
         isLoading,
         userLocation,
+        imgUser,
       }}
     >
       {children}

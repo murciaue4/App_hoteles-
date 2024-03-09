@@ -4,15 +4,42 @@ import { loginContext } from "../../../context/loginContext";
 import axios from "axios";
 import Errors from "../alerts/Errors";
 import { Link, NavLink } from "react-router-dom";
-import OwnerCard from "./CardOwner";
+import OwnerTable from "./OwnerTable";
+import ProfilePictureModal from "../forms/ProfilePictureModal";
+
+
+
+import searchIconB from "../../../static/searchIconB-02.svg";
+import propertyIcon from "../../../static/propertyIcon-10.svg";
+import publishIcon from "../../../static/publishIcon-12.svg";
+import reservedIcon from "../../../static/ReservasIcon-13.svg";
+import subsIcon from "../../../static/MembershipIcon-11.svg";
+import editIcon from "../../../static/editIcon-02.svg";
+import ajustesIcon from "../../../static/AjustesIcon-03.svg";
+
 
 const Dashboard = () => {
-  const { user, closeSession, token } = useContext(loginContext);
+  const { user, closeSession, token, imgUser } = useContext(loginContext);
   const [err, setErr] = useState(false);
   const [dataUser, setDtaUser] = useState();
   const [dataOwner, setDataOwner] = useState(null);
   const [showOwner, setShowOwner] = useState(false);
   const [showFavourites, setShowFavourites] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleUpload = (file) => {
+    // Agrega la lógica para manejar la carga de la imagen aquí
+    console.log('Imagen subida:', file);
+    setModalIsOpen(false);
+  };
 
   const ownerHandleShow = () => {
     setShowOwner(!showOwner);
@@ -56,14 +83,27 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  
+  
+  
+
   return (
     <div className={style.Dashboard}>
-      <section className="w-full h-64 flex justify-center">
+      <section className={`w-full h-64 flex justify-center ${style.bannerBg}`}>
         <div className={style.banner}>
           <div className="flex flex-row justify-center items-center">
-            <div className={style.photo}>
-              <button className={style.button}>+</button>
-            </div>
+          <div className={style.photo}>
+          <img
+              className=""
+              src={`http://localhost:3333/${imgUser}`}
+              alt={`Imagen`}
+            />
+        <button className={style.button} onClick={handleOpenModal}>
+          +
+        </button>
+      </div>
+
+      <ProfilePictureModal isOpen={modalIsOpen} onClose={handleCloseModal} onUpload={handleUpload} />
             <span className="mx-4">
               <h1>{`Hola, ${dataUser ? dataUser["name"] : "null"}`}</h1>
               <h4>{`${dataUser ? "@" + user["username"] : "null"}`}</h4>
@@ -71,17 +111,20 @@ const Dashboard = () => {
           </div>
 
           <div className={`h-full flex flex-col justify-center `}>
-            <button>f</button>
-            <button>X</button>
+            <button className={style.buttonLink}>f</button>
+            <button className={style.buttonLink}>X</button>
           </div>
         </div>
       </section>
 
       <div className={style.body}>
         <div className={style.bodySearchButton}>
-          <button>
-            <Link to={"/"}>Ir al buscador</Link>
-          </button>
+          <Link to={"/"}>
+            <button>
+              <img src={searchIconB} alt="searchIconB" className="h-10" />
+            <span>Buscar hoteles</span>
+            </button>
+          </Link>
         </div>
 
         <div className={style.bodyMisDatos}>
@@ -133,39 +176,42 @@ const Dashboard = () => {
           <div className={style.bodyButtons}>
             <div className={style.selectionBox}>
               <div onClick={ownerHandleShow} className={style.selection}>
-                Mis propiedades
+              <img src={propertyIcon} alt="" />Mis propiedades
               </div>
             </div>
             <div className={style.selectionBox}>
               <Link to={"/hoteles/post"}>
-                <div className={style.selection}>Publicar</div>
+                <div className={style.selection}><img src={publishIcon} alt="" />Publicar</div>
               </Link>
             </div>
             <div className={style.selectionBox}>
-              <div className={style.selection}>Reservas</div>
+              <div className={style.selection}><img src={reservedIcon} alt="" />Reservas</div>
             </div>
             <div className={style.selectionBox}>
-              <div className={style.selection}>Suscribciones</div>
+              <div className={style.selection}><img src={subsIcon} alt="" />Suscribciones</div>
             </div>
             <div className={style.selectionBox}>
-              <div className={style.selection}>Editar perfil</div>
+              <div className={style.selection}><img src={editIcon} alt="" />Editar perfil</div>
             </div>
             <div className={style.selectionBox}>
-              <div className={style.selection}> Ajustes</div>
+              <div className={style.selection}><img src={ajustesIcon} alt="" /> Ajustes</div>
             </div>
           </div>
         </section>
 
-        {showOwner && dataOwner ? (
-          <div className=" text-center">
-            <h2>Mis propiedades</h2>
-            <div className={style.bodyOwners}>
-              {dataOwner.map((owner, index) => (
-                <OwnerCard key={index} owner={owner} />
-              ))}
-            </div>
+        <div className="text-center w-full mt-10">
+      {showOwner && dataOwner ? (
+        <div>
+          <div className=" flex justify-between items-baseline rounded-t-md  ">
+          <h2 className="text-3xl font-bold mb-2 pl-1">Lista de propiedades</h2>
+          <button className="border h-7 w-7 rounded-md flex justify-center items-center text-2xl text-white font-semibold bg-red-600 " onClick={ownerHandleShow}><p>X</p></button>
           </div>
-        ) : null}
+          <div className={style.bodyOwners}>
+            <OwnerTable owners={dataOwner} />
+          </div>
+        </div>
+      ) : null}
+    </div>
 
         {/* espacio para agregar la logica de los favoritos PENDIENTE PUES NEA */}
       </div>

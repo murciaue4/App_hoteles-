@@ -1,7 +1,7 @@
 .Dashboard {
     height: 100%;
     width: 100%;
-
+    background: #f3f3f3;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -9,21 +9,24 @@
     
 }
 
+.bannerBg{
+    background-image: linear-gradient( 135deg, #1D6FA3 10%, #65FDF0 100%);
+    
 
+}
 
 .Dashboard .banner {
-    border-bottom: solid 1px;
     height: 100%;
     width: 100%;
     max-width: 1024px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #04293A;
     padding: 15px;
 }
 
-.Dashboard .banner button {
+
+.Dashboard .banner  .buttonLink {
     box-shadow: 0 0 3px rgb(255, 255, 255);
     height: 45px;
     width: 45px;
@@ -45,7 +48,7 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
-    background-color: #064663;
+    background-color: #efefef;
 }
 
 .Dashboard .photo button {
@@ -82,61 +85,43 @@
     max-width: 1024px;
 }
 
-.body .titlesHover h1{
-    padding: 0;
-    height: 100%;
-    width: 50%;
-    border: solid 1px rgb(45, 45, 45);
-    cursor: pointer;
-    text-transform: capitalize;
-    border-radius: 0px 8px 0px 0px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 10px;
-    background-color: #04293A;
-    color: white;
-}
-.body .titles h1{
-    padding: 0;
-    height: 100%;
-    width: 50%;
-    border: solid 1px rgb(45, 45, 45);
-    cursor: pointer;
-    text-transform: capitalize;
-    border-radius: 8px ;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 10px;
-    
-    
-}
-.body h1:hover{
-    background-color: #04293A;
-    color: white;
-    transition: 0.7s;
-}
-
 .bodySearchButton {
-width: 100%;
-height: 30px;
-    
+width: 70px;
+height: 70px;
+box-shadow: 0px 4px 18px rgba(0, 0, 0, 0.7);
+background: white;   
+border-radius: 35px;
+position:fixed;
+z-index: 10;
+bottom: 40px;
+right: 20px;
 
+}
+
+.bodySearchButton:hover{
+
+    width: 200px;
+    
+    transition: 0.5s;
 }
 .bodySearchButton button{
-  height:30px;
-    width: 150px;
-    border-radius: 8px;
+  height:100%;
+    width: 100%;
+    border-radius: 50%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     font-size: large;
     font-weight: 600;
-    color:#ecb365;
-    background-color: #000000;
-    box-shadow: 0 0 3px #ecb365;  
+   
+}
+.bodySearchButton button > span{
+    display: none;
+}
+.bodySearchButton button:hover >span{
+    display: inline;
+    transition: 2s;
 }
 
 .bodyMisDatos {
@@ -146,6 +131,7 @@ height: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
+   
 
 }
 
@@ -156,19 +142,19 @@ height: 30px;
     justify-content: space-around;
     margin-top: 20px;
     border-radius: 8px;
-    background-color:#04293A;
-
+    background-color:white;
+ box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7);
 }
 
 
 .bodyMisDatos .divDatos .box {
 
    
-    width: 48%;
-    padding-left: 4px;
+    width: 46%;
+    padding-left: 6px;
     padding-top: 10px;
     padding-bottom: 10px;
-    color: rgb(219, 219, 219);
+    color: rgb(0, 0, 0);
 
 
 }
@@ -179,11 +165,14 @@ height: 30px;
     flex-direction: row;
     justify-content: center;
     margin-bottom: 20px;
-    border-radius: 0px 8px 8px 8px;
+    border-radius:8px;
     box-shadow: 0 0 2px black;
-    padding-block: 20px;
+    padding-top: 10px;
     flex-wrap: wrap;
    
+    
+}
+.bodyOwners tr{
     
 }
 .bodyOwners .ownerCard{
@@ -270,12 +259,12 @@ height: 30px;
 
 .bodyButtons {
     
-    margin-top: 80px;
+    margin-top: 20px;
     height: auto;
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
 
@@ -290,9 +279,14 @@ height: 30px;
     font-weight: 400;
     font-style: italic;
 }
+.bodyButtons .selectionBox img{
+    height: 90px;
+    width: 90px;
+}
 
 .bodyButtons .selection {
-    box-shadow: 0 0 2px #064663;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
+    background: white;
     height: 150px;
     width: 300px;
     border-radius: 20px;
@@ -309,8 +303,8 @@ height: 30px;
 
 .body .selection:hover {
     box-shadow: 0 0 4px #064663;
-    background-color: #04293A;
-    color: white;
+    transform: scale(1.1);
+    color: rgb(36, 28, 82);
     transition: 0.2s;
 }
 
@@ -319,9 +313,9 @@ height: 30px;
 
     .bodyMisDatos .divDatos {
         width: 100%;
+        padding-inline: 10px;
         display: flex;
         flex-direction: column;
-        border: solid;
         justify-content: space-around;
     
     }  
