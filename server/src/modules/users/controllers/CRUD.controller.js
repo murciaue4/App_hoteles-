@@ -160,7 +160,7 @@ module.exports = function (dbIn) {
     const postImagesUser = async (req, res) => {
 
         try {
-            console.log('CONTROLLER USER/ REQ.FILEs: ', req.files);
+            
             let idUser = req.params.id_user
             
 
@@ -236,7 +236,6 @@ module.exports = function (dbIn) {
                 data = [...hoteles]
                 data[i].img = images
             };
-            console.log(data);
             res.json(data)
         } catch (error) {
             console.log(error);
@@ -276,8 +275,6 @@ module.exports = function (dbIn) {
                 images = await db.getImagesById(T_IMAGE, idHotel)
                 data[i].img = images
             };
-           
-            console.log('getHotelsByUser: ', data);
             respuestas.sucess(req, res, data, 200)
         } catch (error) {
             console.log(error);

@@ -3,14 +3,15 @@ import style from "./Home.module.css";
 import { useEffect, useState, useContext } from "react";
 import { loginContext } from "../../../context/loginContext";
 import CardHotel from "./CardHotel";
+import SkeletonCardHotel from "./SkeletonCardHotel";
 import svgIcon from "../../../static/star-icon.svg";
 import arrowToggleIcon from "../../../static/arrowToggle.svg";
 import Maps from "../Maps/Mapcomponent";
 
 const Home = () => {
-  const { user, closeSession, token } = useContext(loginContext);
-  const baseUrl = "http://localhost:3333/user/hoteles/";
-  const baseUrlImg = "http://localhost:3333/user/images/";
+  const { user, closeSession, token, URLStatic } = useContext(loginContext);
+  const baseUrl = URLStatic + "user/hoteles/";
+  const baseUrlImg = URLStatic + "user/images/";
   const [allHotels, setAllHotels] = useState();
 
   //estados y manejadores para la seccion de desplegables
@@ -19,6 +20,7 @@ const Home = () => {
   const [showType, setshowType] = useState(false);
   const [showCapacity, setshowCapacity] = useState(false);
   const [showLocation, setshowLocation] = useState(false);
+  const [isLoadingHotels, setIsLoadingHotels] = useState(true);
   //FILTROS
   const [filters, setFilters] = useState({
     searchTerm: "",
@@ -50,7 +52,11 @@ const Home = () => {
       await axios.get(baseUrl, config).then((res) => {
         setAllHotels(res.data);
       });
-      await axios.get("http://localhost:3333/user/images", config);
+
+      await axios.get(baseUrlImg, config);
+      setTimeout(() => {
+        setIsLoadingHotels(false);
+      }, 1000);
     };
     getData();
   }, []);
@@ -111,9 +117,10 @@ const Home = () => {
     const copyOfFilteredHotels = [...filteredHotels];
 
     if (sortBy === "precio") {
-      copyOfFilteredHotels.sort((a, b) => a.precio_por_habitacion - b.precio_por_habitacion);
+      copyOfFilteredHotels.sort(
+        (a, b) => a.precio_por_habitacion - b.precio_por_habitacion
+      );
     }
-     
 
     // Puedes agregar más lógica de ordenación para otras opciones aquí
 
@@ -238,14 +245,13 @@ const Home = () => {
       })
     : [];
 
-
-     
-
   //RENDER
 
   return (
     <div className={style.homeContainer}>
-      <div className={`h-auto w-full flex flex-col bg-white ${style.filterBar} `}>
+      <div
+        className={`h-auto w-full flex flex-col bg-white ${style.filterBar} `}
+      >
         <div className="w-full flex justify-center    ">
           <div className=" w-11/12  flex justify-center  ">
             <div className={style.homeFilters}>
@@ -944,9 +950,11 @@ const Home = () => {
 
         <div className=" contenedor-de-cards w-full py-5 flex flex-col justify-center">
           <ol className="w-full flex flex-col justify-center">
-    {sortedHotels().map((el) => (
-      <CardHotel hotel={el} key={el.id} />
-    ))}
+            {isLoadingHotels ? (
+              <SkeletonCardHotel />
+            ) : (
+              sortedHotels().map((el) => <CardHotel hotel={el} key={el.id} />)
+            )}
           </ol>
         </div>
       </div>

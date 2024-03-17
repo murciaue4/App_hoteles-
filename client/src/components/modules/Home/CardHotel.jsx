@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./CardHotel.module.css";
 import FavoriteIcon from "../../../static/FavouriteIcon-03.svg";
 import arrowToggleIcon from "../../../static/arrowToggle.svg";
 import checkIcon from "../../../static/checkIcon.svg";
+import isFavoriteIcon from "../../../static/favouriteIconRed-02.svg";
+import { loginContext } from "../../../context/loginContext";
+
 
 const HotelCard = ({ hotel }) => {
-  const  { name, description, precio_por_habitacion, img, location, type } =
+
+  const {addToFavorites, removeFromFavorites, isFavorite} = useContext(loginContext)
+
+
+  const  { id, name, description, precio_por_habitacion, img, location, type } =
     hotel;
   function acortarTexto(texto, longitudMaxima, agregarPuntosSuspensivos) {
     if (texto.length > longitudMaxima) {
@@ -35,14 +42,18 @@ const HotelCard = ({ hotel }) => {
 
         <div className={styles.hotelDetails}>
           <div className={styles.hotelDetailsLeft}>
-            <section>
-              <h1 className={styles.hotelName}>{toCapitalCase(name)}</h1>
-              <div>
-                <button>
-                  <img src={FavoriteIcon} alt="<3" className="w-7 h-7" />
-                </button>
-              </div>
-            </section>
+          <section>
+          <h1 className={styles.hotelName}>{toCapitalCase(name)}</h1>
+          <div>
+            <button onClick={() => (isFavorite(id) ? removeFromFavorites(id) : addToFavorites(id))}>
+              <img
+                src={isFavorite(id) ? isFavoriteIcon : FavoriteIcon}
+                alt="<3"
+                className={`w-7 h-7 `}
+              />
+            </button>
+          </div>
+        </section>
             <section className="pb-5">
               <h3>{location}</h3>
               <img src={arrowToggleIcon} alt="*" className="w-4 h-4 mr-1" />

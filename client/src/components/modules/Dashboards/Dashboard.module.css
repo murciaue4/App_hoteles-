@@ -49,10 +49,17 @@
     align-items: flex-end;
     justify-content: flex-end;
     background-color: #efefef;
+    position: relative;
 }
+.photo > img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover; 
+  }
 
 .Dashboard .photo button {
-    box-shadow: 0 0 1px #ecb365;
+    box-shadow: 0 0 1px 0.5px #2a2a2a;
     width: 30px;
     height: 30px;
     display: flex;
@@ -61,8 +68,12 @@
     margin-right: 15px;
     border-radius: 50%;
     font-size: x-large;
-    background-color: black;
+    background-color: rgb(236, 230, 230);
     color: #ecb365;
+    position: absolute;
+}
+.Dashboard .photo button:hover{
+    box-shadow: 0 0 3px 0.5px #2a2a2a; 
 }
 
 .Dashboard .banner h1 {

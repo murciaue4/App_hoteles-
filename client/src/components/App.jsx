@@ -7,6 +7,7 @@ import Footer from "./modules/Nav/Footer";
 import Home from "./modules/Home/Home";
 import Profile from "./modules/Dashboards/Dashboard";
 import FormHotel from "./modules/forms/FormHotel";
+import Favourites from "./modules/Dashboards/Favourites";
 import FormHotel02 from "./modules/forms/FormHotel02";
 import { loginContext } from "../context/loginContext";
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/hoteles">
             <Route path="post" element = {<FormHotel/>}> </Route>
         </Route>
+      <Route path="/favorites" element = {isLogin? <Favourites/> : <Navigate to="/login" /> }/>
       </Routes>
       </div>
 

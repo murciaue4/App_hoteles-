@@ -1,11 +1,9 @@
 exports.sucess = (req, res, message, status) => {
     const estado = status 
     const msj = message || []
-    console.log('_________________RESPUESTA ESTANDART ________________', {
-        error: false,
-        status: estado,
-        body: msj
-    });
+
+    console.log('RESPUESTA ESTANDARD DEL SERVIDOR: ' + estado);
+
     return res.status(estado).json({
         error: false,
         status: estado,

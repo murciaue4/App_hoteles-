@@ -7,8 +7,6 @@ import { Link, NavLink } from "react-router-dom";
 import OwnerTable from "./OwnerTable";
 import ProfilePictureModal from "../forms/ProfilePictureModal";
 
-
-
 import searchIconB from "../../../static/searchIconB-02.svg";
 import propertyIcon from "../../../static/propertyIcon-10.svg";
 import publishIcon from "../../../static/publishIcon-12.svg";
@@ -16,10 +14,12 @@ import reservedIcon from "../../../static/ReservasIcon-13.svg";
 import subsIcon from "../../../static/MembershipIcon-11.svg";
 import editIcon from "../../../static/editIcon-02.svg";
 import ajustesIcon from "../../../static/AjustesIcon-03.svg";
-
+import userIcon from "../../../static/userIconBold-06.svg";
+import editIconLight from "../../../static/editIconLight-15.svg";
 
 const Dashboard = () => {
-  const { user, closeSession, token, imgUser } = useContext(loginContext);
+  const { URLStatic, user, closeSession, token, imgUser } =
+    useContext(loginContext);
   const [err, setErr] = useState(false);
   const [dataUser, setDtaUser] = useState();
   const [dataOwner, setDataOwner] = useState(null);
@@ -36,8 +36,6 @@ const Dashboard = () => {
   };
 
   const handleUpload = (file) => {
-    // Agrega la lógica para manejar la carga de la imagen aquí
-    console.log('Imagen subida:', file);
     setModalIsOpen(false);
   };
 
@@ -47,9 +45,6 @@ const Dashboard = () => {
   const favouritesHandleShow = () => {
     setShowFavourites(!showFavourites);
   };
-
-  console.log(dataUser);
-  console.log(dataOwner);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,19 +56,17 @@ const Dashboard = () => {
           },
         };
         const data = await axios.get(
-          `http://localhost:3333/user/users/${user.id}`,
+          `${URLStatic}user/users/${user.id}`,
           config
         );
         const propiedades = await axios.get(
-          `http://localhost:3333/user/hoteles/id_user/${user.id}`,
+          `${URLStatic}user/hoteles/id_user/${user.id}`,
           config
         );
 
         if (!propiedades.data.body.length == 0) {
           setDataOwner(propiedades.data.body);
         }
-
-        console.log("propiedades : ", propiedades);
 
         setDtaUser(data.data.body[0]);
       } catch (error) {
@@ -83,27 +76,28 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  
-  
-  
-
   return (
     <div className={style.Dashboard}>
       <section className={`w-full h-64 flex justify-center ${style.bannerBg}`}>
         <div className={style.banner}>
           <div className="flex flex-row justify-center items-center">
-          <div className={style.photo}>
-          <img
-              className=""
-              src={`http://localhost:3333/${imgUser}`}
-              alt={`Imagen`}
-            />
-        <button className={style.button} onClick={handleOpenModal}>
-          +
-        </button>
-      </div>
+            <div className={style.photo}>
+              <img
+                className=""
+                src={imgUser ? URLStatic + imgUser : userIcon}
+                alt={`Imagen`}
+              />
+              <button className={style.button} onClick={handleOpenModal}>
+                <img src={editIconLight} alt="" />
+              </button>
+            </div>
 
-      <ProfilePictureModal isOpen={modalIsOpen} onClose={handleCloseModal} onUpload={handleUpload} />
+            <ProfilePictureModal
+              isOpen={modalIsOpen}
+              onClose={handleCloseModal}
+              onUpload={handleUpload}
+              existingImage={imgUser ? URLStatic + imgUser : userIcon}
+            />
             <span className="mx-4">
               <h1>{`Hola, ${dataUser ? dataUser["name"] : "null"}`}</h1>
               <h4>{`${dataUser ? "@" + user["username"] : "null"}`}</h4>
@@ -122,7 +116,7 @@ const Dashboard = () => {
           <Link to={"/"}>
             <button>
               <img src={searchIconB} alt="searchIconB" className="h-10" />
-            <span>Buscar hoteles</span>
+              <span>Buscar hoteles</span>
             </button>
           </Link>
         </div>
@@ -176,42 +170,64 @@ const Dashboard = () => {
           <div className={style.bodyButtons}>
             <div className={style.selectionBox}>
               <div onClick={ownerHandleShow} className={style.selection}>
-              <img src={propertyIcon} alt="" />Mis propiedades
+                <img src={propertyIcon} alt="" />
+                Mis propiedades
               </div>
             </div>
             <div className={style.selectionBox}>
               <Link to={"/hoteles/post"}>
-                <div className={style.selection}><img src={publishIcon} alt="" />Publicar</div>
+                <div className={style.selection}>
+                  <img src={publishIcon} alt="" />
+                  Publicar
+                </div>
               </Link>
             </div>
             <div className={style.selectionBox}>
-              <div className={style.selection}><img src={reservedIcon} alt="" />Reservas</div>
+              <div className={style.selection}>
+                <img src={reservedIcon} alt="" />
+                Reservas
+              </div>
             </div>
             <div className={style.selectionBox}>
-              <div className={style.selection}><img src={subsIcon} alt="" />Suscribciones</div>
+              <div className={style.selection}>
+                <img src={subsIcon} alt="" />
+                Suscribciones
+              </div>
             </div>
             <div className={style.selectionBox}>
-              <div className={style.selection}><img src={editIcon} alt="" />Editar perfil</div>
+              <div className={style.selection}>
+                <img src={editIcon} alt="" />
+                Editar perfil
+              </div>
             </div>
             <div className={style.selectionBox}>
-              <div className={style.selection}><img src={ajustesIcon} alt="" /> Ajustes</div>
+              <div className={style.selection}>
+                <img src={ajustesIcon} alt="" /> Ajustes
+              </div>
             </div>
           </div>
         </section>
 
         <div className="text-center w-full mt-10">
-      {showOwner && dataOwner ? (
-        <div>
-          <div className=" flex justify-between items-baseline rounded-t-md  ">
-          <h2 className="text-3xl font-bold mb-2 pl-1">Lista de propiedades</h2>
-          <button className="border h-7 w-7 rounded-md flex justify-center items-center text-2xl text-white font-semibold bg-red-600 " onClick={ownerHandleShow}><p>X</p></button>
-          </div>
-          <div className={style.bodyOwners}>
-            <OwnerTable owners={dataOwner} />
-          </div>
+          {showOwner && dataOwner ? (
+            <div>
+              <div className=" flex justify-between items-baseline rounded-t-md  ">
+                <h2 className="text-3xl font-bold mb-2 pl-1">
+                  Lista de propiedades
+                </h2>
+                <button
+                  className="border h-7 w-7 rounded-md flex justify-center items-center text-2xl text-white font-semibold bg-red-600 "
+                  onClick={ownerHandleShow}
+                >
+                  <p>X</p>
+                </button>
+              </div>
+              <div className={style.bodyOwners}>
+                <OwnerTable owners={dataOwner} />
+              </div>
+            </div>
+          ) : null}
         </div>
-      ) : null}
-    </div>
 
         {/* espacio para agregar la logica de los favoritos PENDIENTE PUES NEA */}
       </div>

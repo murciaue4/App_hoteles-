@@ -6,15 +6,14 @@ import {
   Pin,
   InfoWindow,
 } from "@vis.gl/react-google-maps";
-import { loginContext } from "../../../context/loginContext";
+import { geoLocationContext } from "../../../context/geoLocationContext";
 import Loading from "../alerts/Loading";
 
 const Maps = () => {
-  const { isLoading, userLocation } = useContext(loginContext);
+  const { isLoading, userLocation } = useContext(geoLocationContext);
 
   const position = userLocation;
   const [open, setOpen] = useState(false);
-console.log(position);
   if (isLoading) {
     return <Loading />;
   }

@@ -4,18 +4,8 @@ import { getUserLocation } from "../helpers";
 import axios from "axios";
 
 const GlobalContextProvider = ({ children }) => {
-  const [isLoading, setisLoading] = useState(true);
-  const [imgUser, setImgUser] = useState(null);
-  
-  const getUserCurrentLocation = async () => {
-    try {
-      const latLng = await getUserLocation();
-      setuserLocation({ lat: latLng[0], lng: latLng[1] });
-      setisLoading(false);
-    } catch (error) {
-      console.error("Error obteniendo la ubicación del usuario:", error);
-    }
-  };
+  const URLStatic = "http://localhost:3333/";
+ 
 
   const localTokenExtractor = () => {
     const localTk = window.localStorage.getItem("sessionLogin");
@@ -44,20 +34,32 @@ const GlobalContextProvider = ({ children }) => {
     }
   };
 
-  
-
-  const [userLocation, setuserLocation] = useState(getUserCurrentLocation);
   const [token, setToken] = useState(localTokenExtractor);
   const [isLogin, setIsLogin] = useState(getLocalSession);
   const [user, setUser] = useState(getLocalSessionUser);
+  const [imgUser, setImgUser] = useState(null);
+  const [imageChanged, setImageChanged] = useState(false);
+ 
 
-  const closeSession = async () => {
-    //aplicar logica de cerrado de sessio cono el aoutoguardado y el envio de datos temporales al servidor mañiño.
+  const addToFavorites = (hotelId) => {
+    setFavourites((prevFavourites) => [...prevFavourites, hotelId]);
+  };
+
+  const removeFromFavorites = (hotelId) => {
+    setFavourites((prevFavourites) => prevFavourites.filter((id) => id !== hotelId));
+  };
+
+  const isFavorite = (hotelId) => favourites.includes(hotelId);
+
+  const closeSession = () => {
+    //PENDIENTE: aplicar logica de cerrado de sessio cono el aoutoguardado y el envio de datos temporales al servidor mañiño.
     window.localStorage.removeItem("sessionLogin");
     window.localStorage.removeItem("sessionLoginUser");
     setIsLogin(getLocalSession);
+    window.location.reload()
   };
 
+  //Obtengo la imagen de perfil desde la base de datos
   useEffect(() => {
     const getProfileImgUser = async () => {
       if (user) {
@@ -73,8 +75,8 @@ const GlobalContextProvider = ({ children }) => {
             `http://localhost:3333/user/img_user/${id}`,
             config
           );
-          console.log('data', response.data.body);
           setImgUser(response.data.body);
+          setImageChanged(true);
         } catch (error) {
           console.error("Error fetching user image:", error);
         }
@@ -82,24 +84,54 @@ const GlobalContextProvider = ({ children }) => {
         setImgUser(null);
       }
     };
-  
-    getProfileImgUser();
-  }, [user, token]); 
 
-  //creando un contexto global para los datos de login
+    getProfileImgUser();
+  }, [user, token, imageChanged]);
+
+  
+  const [favourites, setFavourites] = useState([]);
+
+    useEffect(() => {
+    if (user) {
+      const uniqueStorageKey = `favorites_${user.id}`;
+      const storedFavorites = localStorage.getItem(uniqueStorageKey);
+      if (JSON.parse(storedFavorites).length > 0) {
+        console.log('SI HAY!!');
+        setFavourites(JSON.parse(storedFavorites));
+      }
+    }
+  }, [user]);
+  // Guarda los favoritos en el localStorage con un nombre único para cada usuario
+  useEffect(() => {
+    
+    if (user) {
+      const uniqueStorageKey = `favorites_${user.id}`;
+     
+      localStorage.setItem(uniqueStorageKey, JSON.stringify(favourites));
+    }
+    console.log("setITEM");
+  }, [favourites, user]);
+
+  // Carga los favoritos desde el localStorage al montar el componente
+
 
   return (
     <loginContext.Provider
       value={{
+        URLStatic,
         isLogin,
         setIsLogin,
         token,
         setToken,
         user,
         closeSession,
-        isLoading,
-        userLocation,
         imgUser,
+        imageChanged,
+        setImageChanged,
+        favourites,
+        addToFavorites,
+        removeFromFavorites,
+        isFavorite,
       }}
     >
       {children}

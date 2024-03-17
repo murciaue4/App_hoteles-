@@ -30,7 +30,6 @@ function decodificarCabecera(req) {
     const permiso = req.headers.authorization;
     const token = optenerToken(permiso);
     const verificado = verificarToken(token);
-    console.log('authentication/user verificado', verificado);
     req.user = verificado;
     return verificado;
 };
@@ -38,7 +37,6 @@ function decodificarCabecera(req) {
 const checkearToken = {
     confirmarToken: function (req) {
         const decodificado = decodificarCabecera(req);
-        console.log('authentication/user decodificado: ', decodificado);
 
         if (!decodificado) {
             throw error('Not authorized', 401)
