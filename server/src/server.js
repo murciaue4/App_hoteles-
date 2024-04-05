@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
-const adminRoute = require('./modules/clients/routes/imgCRUD.routes');
-const userRoute = require('./modules/users/routes/imgCRUD.routes');
-const authRoute = require('./modules/auth/routes/imgCRUD.routes');
+const adminRoute = require('./modules/clients/routes/CLIENTS.routes');
+const userRoute = require('./modules/users/routes/USER.routes');
+const authRoute = require('./modules/auth/routes/AUTH.routes');
 const { uploader } = require('./middlewares');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 //router
 app.use('/api', adminRoute);
 app.use('/user', userRoute);
-app.use('/auth', authRoute);
+app.use('/auth', authRoute); 
 
 
 app.listen(app.get('port'), () => {

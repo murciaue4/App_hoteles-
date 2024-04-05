@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import FavoriteCard from "../Home/CardHotel";
+import FavoriteCard from "../Dashboards/FavouriteCard";
 import { loginContext } from "../../../context/loginContext";
 import SkeletonCardHotel from "../Home/SkeletonCardHotel";
 
@@ -55,9 +55,9 @@ const Favourites = ({ children }) => {
   
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-4">Mis Hoteles Favoritos</h2>
-      <div className="">
+    <div className=" flex flex-col justify-center items-center w-screen py-8 bg-gray-200">
+      <h2 className="text-center text-3xl font-bold mb-4">Mis Hoteles Favoritos</h2>
+      <div className="flex flex-col ">
       {isLoadingHotels ? (
               <SkeletonCardHotel />
             ) : (

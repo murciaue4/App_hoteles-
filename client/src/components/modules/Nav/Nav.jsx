@@ -1,16 +1,25 @@
 import style from "./Nav.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginContext } from "../../../context/loginContext";
 import { useContext, useState } from "react";
 import searchIconW from "../../../static/searchIconW.svg";
 import userIcon from "../../../static/userIconBold-06.svg";
 import menuIcon from "../../../static/menuIconlight-07.svg";
 import FavouriteIcon from "../../../static/FavouriteIcon2-03.svg";
+import AlertLogUp from "../alerts/AlertLogUp";
 
 const nav = () => {
   const [showMenuToggle, setShowMenuToggle] = useState(false);
-  const { URLStatic, isLogin, user, closeSession, imgUser } =
-    useContext(loginContext);
+  const {
+    URLStatic,
+    isLogin,
+    user,
+    closeSession,
+    imgUser,
+    showAlertLogUp,
+    handleFavouritesClick,
+    handleSetShowAlert,
+  } = useContext(loginContext);
 
   function toCapitalCase(string) {
     return string.replace(/\b\w/g, (match) => match.toUpperCase());
@@ -23,20 +32,25 @@ const nav = () => {
             <h1>H!</h1>
           </Link>
 
-          <span>Campo Rubiales</span>
+          <span className="">Campo Rubiales</span>
         </section>
 
         <section className={style.account}>
-        <Link to={"/favorites"}>
-          <button className={style.menuButton}>
+          <button onClick={handleFavouritesClick} className={style.menuButton}>
             <div className="flex h-full w-6">
-              <img src={FavouriteIcon} alt="" className="h-full mt-1" />
+              <img
+                src={FavouriteIcon}
+                alt=""
+                className="h-full mt-1 hover:scale-110"
+              />
             </div>
-            <div className="h-full  grid items-center ml-2">
-              <span>Favoritos</span>
+            <div
+              className={`h-full grid items-center ml-2 `}
+            >
+              <span className="hidden md:block">Favoritos</span>
             </div>
           </button>
-          </Link>
+
           <button>
             {isLogin ? (
               <Link to={"/profile"}>
@@ -67,6 +81,7 @@ const nav = () => {
               )}
             </div>
           </button>
+
           <button
             className={style.menuButton}
             onClick={() => {
@@ -76,24 +91,21 @@ const nav = () => {
             <div className="flex h-full w-6">
               <img src={menuIcon} alt="" className="h-full mt-1" />
             </div>
-            <div className="h-full  grid items-center ml-2">
-              <span>Menu</span>
+            <div className="h-full  grid items-center ml-2 ">
+              <span className="hidden md:block">Menu</span>
             </div>
           </button>
           {showMenuToggle ? (
             <div
               className={`absolute w-auto h-auto -bottom-28 right-0  z-20 border flex flex-col bg-white rounded-lg ${style.shadowBox} ${style.toggleMenu}`}
             >
-              <button className=" text-left">
-                {isLogin ? (
-                  <span
-                    onClick={() => {
-                      closeSession();
-                    }}
-                  >
-                    Salir
-                  </span>
-                ) : null}
+              <button
+                onClick={() => {
+                  closeSession();
+                }}
+                className=" text-left"
+              >
+                {isLogin ? <span>Salir</span> : null}
               </button>
               <button className=" text-left">Vistos recientemente</button>
               <button className="text-left">Ayuda y atencion al cliente</button>
@@ -101,6 +113,13 @@ const nav = () => {
           ) : null}
         </section>
       </nav>
+      {showAlertLogUp && (
+        <AlertLogUp
+          onClose={() => {
+            handleSetShowAlert();
+          }}
+        />
+      )}
     </div>
   );
 };

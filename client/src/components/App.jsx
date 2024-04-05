@@ -6,9 +6,9 @@ import Nav from "./modules/Nav/Nav";
 import Footer from "./modules/Nav/Footer";
 import Home from "./modules/Home/Home";
 import Profile from "./modules/Dashboards/Dashboard";
-import FormHotel from "./modules/forms/FormHotel";
+import AddHotelForm from "./modules/forms/AddHotelForm";
 import Favourites from "./modules/Dashboards/Favourites";
-import FormHotel02 from "./modules/forms/FormHotel02";
+import ComponentePrueba from "./modules/alerts/AlertLogUp";
 import { loginContext } from "../context/loginContext";
 
 function App() {
@@ -36,13 +36,17 @@ function App() {
           element={isLogin ? <Profile /> : <Navigate to="/login" />}
         />
         <Route path="/hoteles">
-            <Route path="post" element = {<FormHotel/>}> </Route>
+            <Route path="post" element = {isLogin? <AddHotelForm/> : <Navigate to="/login" />}> </Route>
         </Route>
       <Route path="/favorites" element = {isLogin? <Favourites/> : <Navigate to="/login" /> }/>
+      <Route
+          path="/blank"
+          element={<ComponentePrueba />}
+        />
       </Routes>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

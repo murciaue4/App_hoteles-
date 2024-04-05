@@ -1,11 +1,12 @@
 import style from "./Dashboard.module.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { loginContext } from "../../../context/loginContext";
 import axios from "axios";
 import Errors from "../alerts/Errors";
 import { Link, NavLink } from "react-router-dom";
 import OwnerTable from "./OwnerTable";
 import ProfilePictureModal from "../forms/ProfilePictureModal";
+import VerifyAlert from "../alerts/VerifyAlert";
 
 import searchIconB from "../../../static/searchIconB-02.svg";
 import propertyIcon from "../../../static/propertyIcon-10.svg";
@@ -26,6 +27,17 @@ const Dashboard = () => {
   const [showOwner, setShowOwner] = useState(false);
   const [showFavourites, setShowFavourites] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const tableRef = useRef(null);
+
+  const scrollToTable = () => {
+    if (tableRef.current) {
+      const tableTop = tableRef.current.getBoundingClientRect().top;
+      window.scrollTo({
+        top: window.scrollY + tableTop,
+        behavior: "smooth", // Opcional: hace que el desplazamiento sea suave
+      });
+    }
+  };
 
   const handleOpenModal = () => {
     setModalIsOpen(true);
@@ -41,11 +53,13 @@ const Dashboard = () => {
 
   const ownerHandleShow = () => {
     setShowOwner(!showOwner);
+    setTimeout(() => {
+      scrollToTable();
+    }, 100);
   };
   const favouritesHandleShow = () => {
     setShowFavourites(!showFavourites);
   };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,6 +83,7 @@ const Dashboard = () => {
         }
 
         setDtaUser(data.data.body[0]);
+
       } catch (error) {
         setErr(error);
       }
@@ -120,7 +135,7 @@ const Dashboard = () => {
             </button>
           </Link>
         </div>
-
+        {!user.isVerify? <VerifyAlert/>: null}
         <div className={style.bodyMisDatos}>
           <div className={style.divDatos}>
             <div className={style.box}>
@@ -169,7 +184,12 @@ const Dashboard = () => {
         <section className="w-full flex flex-row justify-center items-center ">
           <div className={style.bodyButtons}>
             <div className={style.selectionBox}>
-              <div onClick={ownerHandleShow} className={style.selection}>
+              <div
+                onClick={() => {
+                  ownerHandleShow();
+                }}
+                className={style.selection}
+              >
                 <img src={propertyIcon} alt="" />
                 Mis propiedades
               </div>
@@ -222,9 +242,9 @@ const Dashboard = () => {
                   <p>X</p>
                 </button>
               </div>
-              <div className={style.bodyOwners}>
-                <OwnerTable owners={dataOwner} />
-              </div>
+              <div className={style.bodyOwners} ref={tableRef}>
+          <OwnerTable owners={dataOwner} />
+        </div>
             </div>
           ) : null}
         </div>

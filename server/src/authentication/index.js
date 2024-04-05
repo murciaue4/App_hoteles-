@@ -8,11 +8,14 @@ let secret = config.jwt.secret;
 
 function asignaToken(data) {
     return jwt.sign(data, secret)
-
-};
+}; 
 
 function verificarToken(data) {
-    return jwt.verify(data, secret)
+    const decodedToken = jwt.verify(data, secret)
+    if (!decodedToken.id) {
+        throw error('Invalid token format', 401);
+    }
+    return decodedToken
 };
 
 function optenerToken(authorization) {
@@ -30,7 +33,13 @@ function decodificarCabecera(req) {
     const permiso = req.headers.authorization;
     const token = optenerToken(permiso);
     const verificado = verificarToken(token);
-    req.user = verificado;
+
+    let reqId = req.params.id || req.params.id_user
+
+    if (verificado.id != reqId) {
+        throw error('Invalid token for this user', 401);
+    }
+
     return verificado;
 };
 
@@ -41,6 +50,7 @@ const checkearToken = {
         if (!decodificado) {
             throw error('Not authorized', 401)
         }
+        return decodificado;
     }
 };
 

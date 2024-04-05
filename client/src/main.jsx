@@ -8,11 +8,11 @@ import ProviderLocatiom from "./context/GeoLocationContextProvider.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>
       <ProviderLocatiom>
-    <ProviderLogin>
         <BrowserRouter>
+    <ProviderLogin>
           <App />
-        </BrowserRouter>
     </ProviderLogin>
+        </BrowserRouter>
       </ProviderLocatiom>
   </StrictMode>
 );

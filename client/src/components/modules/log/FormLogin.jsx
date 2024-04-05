@@ -1,4 +1,3 @@
-import style from "./FormLogin.module.css";
 import React, { useState } from "react";
 import axios from "axios";
 import Errors from "../alerts/Errors";
@@ -15,7 +14,7 @@ function LoginForm({ handleSetShowForm01 }) {
   };
 
   const cambiar = () => {
-    handleSetShowForm01(true);
+    handleSetShowForm01();
   };
 
   const handleSubmit = (e) => {
@@ -43,9 +42,11 @@ function LoginForm({ handleSetShowForm01 }) {
           JSON.stringify({
             id: res.data.body.id,
             username: res.data.body.username,
+            email: res.data.body.email,
+            isVerify: res.data.body.is_verify,
           })
         );
-        
+
         location.reload();
       })
       .catch((err) => {
@@ -55,29 +56,26 @@ function LoginForm({ handleSetShowForm01 }) {
   };
 
   return (
-    <div className={style.LoginForm}>
-      <div
-        style={{
-          backgroundColor: "#064663",
-          width: "40px",
-          height: "40px",
-          color: "white",
-          display: "grid",
-          placeContent: "center",
-          fontWeight: "bolder",
-          borderRadius: "5px",
-        }}
+    <div
+      className={`w-full h-full flex flex-col justify-around items-center rounden-xl py-4 .`}
+    >
+      <div className="bg-blue-600 w-10 h-10 text-white grid place-content-center font-bold rounded-md">
+  H!
+</div>
+      <form
+        onSubmit={handleSubmit}
+        className={`w-10/12 h-3/4 flex flex-col justify-around items-center`}
       >
-        H!
-      </div>
-      <form onSubmit={handleSubmit} className={style.form}>
-        <div className={style.title}>
+        <div className="text-xl font-semibold">
           <h2>Iniciar Sesión</h2>
         </div>
-        {error? <Errors error={error} /> : null}
-        <div className="divInputs">
-          <label htmlFor="username">Usuario:</label>
+
+        <div>
+          <label className="text-md " htmlFor="username">
+            Usuario
+          </label>
           <input
+            className="divInputs w-full outline-none  pl-2 border border-slate-300 h-8 rounded-xl text-center mb-4 "
             required={true}
             type="text"
             id="username"
@@ -88,8 +86,11 @@ function LoginForm({ handleSetShowForm01 }) {
             }}
           />
 
-          <label htmlFor="password">Contraseña:</label>
+          <label className="text-md mt-3" htmlFor="password">
+            Contraseña
+          </label>
           <input
+            className="divInputs w-full outline-none  pl-1 border border-slate-300 h-8 rounded-xl text-center "
             required={true}
             type="password" // Este tipo de input oculta la contraseña
             id="password"
@@ -99,12 +100,28 @@ function LoginForm({ handleSetShowForm01 }) {
               setPassword(e.target.value);
             }}
           />
+          <div className="w-full flex justify-end hover:underline cursor-pointer">
+            <span className="text-sm text-blue-600 font-medium">
+              Olvidé mi contraseña
+            </span>
+          </div>
         </div>
-        <div className={style.divButton}>
-          <button type="submit">Listo</button>
+        <div className="w-full flex justify-center">
+          <button
+            type="submit"
+            className=" w-36 p-2 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-900"
+          >
+            Listo
+          </button>
         </div>
       </form>
-      <span onClick={cambiar}>Crear una cuenta</span>
+      <span
+        className="text-sm font-semibold cursor-pointer text-blue-600 hover:text-blue-900"
+        onClick={cambiar}
+      >
+        Crear una cuenta
+      </span>
+      {error ? <Errors error={error} /> : null}
     </div>
   );
 }

@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
 
-const Errors = ({error}) => {
+const Errors = ({ error }) => {
   return (
-    <div className='absolute inset-x-0 top-1/2 transform -translate-y-1/2 flex items-center justify-center bg-white border border-gray-500 shadow-md h-16 text-red-500 font-bold'>
-      <p >{`${error.body}`}</p>
+    <div class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 border border-gray-500 shadow-md h-screen text-red-500 font-bold z-50 overflow-hidden">
+      <div class="relative max-w-md mx-auto p-4">
+        <p class="text-center">{`${error.body}`}</p>
+      </div>
     </div>
   );
 };

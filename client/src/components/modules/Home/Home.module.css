@@ -1,38 +1,36 @@
-.homeContainer {
+/* .homeContainer {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     width: 100%;
-    min-width: 520px;
+    min-width: 370px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0;
-    background: #f3f3f3;
-}
+    background: #e2e2e2;
+} */
 
-.homeFilters {
+/* .homeFilters {
     display: flex;
     justify-content: space-between;
     margin-block: 20px;
     width: 100%;
     max-width: 1024px;
     font-size: medium;
-
-    
-}
-.filterBar{
+} */
+/* .filterBar{
    
-        position: -webkit-sticky; /* Para Safari */
+        position: -webkit-sticky; 
         position: sticky;
         top: 0; 
         z-index: 10;
       
       
-}
+} */
 
 
-.homeSortBy {
+/* .homeSortBy {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -40,18 +38,9 @@
     max-width: 1024px;
     margin-inline: auto;
     margin-top: 8px;
-}
+} */
 
-.homeMapsLocation {
-    border: 3px solid white;
-    box-shadow: 0 0 1px 1px rgb(225, 225, 225);
-    padding: 2px;
-    height: 60px;
-    border-radius: 10px;
-
-}
-
-.homeFilters .input {
+/* .homeFilters .input {
     height: 32px;
     text-align: center;
     font-size: large;
@@ -100,6 +89,8 @@
 .filtrosPopulares input {
     margin-right: 10px;
     cursor: pointer;
+    height: 18px;
+    width: 18px;
 }
 
 .Home {
@@ -108,4 +99,4 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
+} */

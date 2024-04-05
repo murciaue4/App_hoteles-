@@ -10,7 +10,16 @@ const pool = mysql.createPool(dbConfig.db);
 
 
 //_____________________________POST________________________________________
+ 
 
+const postComment = async (tabla, body) => {
+  const result = await pool.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE timestamp = CURRENT_TIMESTAMP, ?;`, [body, body]);
+  return result;
+};
+const postRate = async (tabla, body) => {
+  const result = await pool.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE timestamp = CURRENT_TIMESTAMP, ?;`, [body, body]);
+  return result;
+};
 const postUser = async (tabla, body) => {
   const result = await pool.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?;`, [body, body]);
   return result;
@@ -20,10 +29,10 @@ const postHotel = async (tabla, body) => {
   return result;
 };
 const postImage = async (tabla, req, idHotel, idUser) => {
-  const files = req.files; // req.files contendrá la matriz de archivos si utilizas .array('images')
+  const files = req.files; // req.files contendrá la matriz de archivos si utilizo .array('images')
 
   const insertImageToDatabase = async (file) => {
-    
+
     // Extraigo los parámetros del archivo que se encuentra en el objeto file de la request y de la base de datos.
     const name = file.filename;
     const data = fs.readFileSync(path.join(__dirname, '../public/uploads', file.filename));
@@ -42,7 +51,7 @@ const postImage = async (tabla, req, idHotel, idUser) => {
       dataBody.id_user = idUser
     }
 
-    const [rows] = await pool.query(`SELECT originalname FROM ${tabla};`);
+    const [rows] = await pool.query(`SELECT originalname FROM ${tabla} WHERE id_hotel = ${idHotel};`);
 
     // Si es el primer dato, lo insertamos en la base de datos. Si no, filtramos para que no esté duplicado, filtramos por nombre original.
     if (rows.length === 0 || !rows.some((el) => el.originalname === originalName)) {
@@ -59,7 +68,6 @@ const postImage = async (tabla, req, idHotel, idUser) => {
   const results = await Promise.all(files.map(insertImageToDatabase));
   return results;
 };
-
 const postImgUser = async (tabla, req, idUser) => {
   try {
     const files = req.files;
@@ -79,10 +87,10 @@ const postImgUser = async (tabla, req, idUser) => {
         if (idUser) {
           dataBody.id_user = idUser;
         };
-        
-          const result = await pool.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?;`, [dataBody, dataBody]);
-          return result;
-        
+
+        const result = await pool.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?;`, [dataBody, dataBody]);
+        return result;
+
       } catch (insertError) {
         console.error(`Error al insertar la imagen en la base de datos: ${insertError.message}`);
         throw insertError; // Re-lanzar el error para que pueda ser manejado por el bloque catch externo
@@ -98,48 +106,25 @@ const postImgUser = async (tabla, req, idUser) => {
 };
 
 
+//________________________________GET_________________________________________
 
 
-//****************************UPDATE*******************************/
-
-const updateHotel = async (tabla, body, id) => {
-  const field = Object.keys(body)[1]
-  
-  try {
-    if (!body || !body.description) {
-      throw new error('Description is missing in the request body.');
-    }
-
-    const result = await pool.query(`UPDATE ?? SET ${field} = '${body[field]}' WHERE id = ?`, [tabla, id]);
-    console.log('Result from updateHotel in database: ', result);
-    return result;
-  } catch (error) {
-    console.error('Error in updateHotel:', error);
-    throw error;
-  }
+const getRatingUser = async (tabla, id) => {
+  const [rows] = await pool.query(`SELECT * FROM ${tabla} WHERE id_user = ${id};`)
+  return rows;
 };
-const updateUSer = async (tabla, body, id) => {
-  const field = Object.keys(body).map(el=`${el} = '${body[el]}'`)
-  console.log( 'BODY on database: ', field);
-  try {
-    if (!body || !body.description) {
-      throw new error('Description is missing in the request body.');
-    }
-
-    const result = await pool.query(`UPDATE ?? SET ? WHERE id = ?`, [tabla, field, body.description, id]);
-    console.log('Result from updateHotel in database: ', result);
-    return result;
-  } catch (error) {
-    console.error('Error in updateHotel:', error);
-    throw error;
-  }
+const getCommentUser = async (tabla, id) => {
+  const [rows] = await pool.query(`SELECT * FROM ${tabla} WHERE id_user = ${id};`)
+  return rows;
 };
-
-/*UPDATE clientes
-SET estado = 'Activo'
-WHERE id = 1; */
-//--------------------------------GET----------------------------------
-
+const getRatingHotel = async (tabla, id) => {
+  const [rows] = await pool.query(`SELECT * FROM ${tabla} WHERE id_hotel = ${id};`)
+  return rows;
+};
+const getCommentHotel = async (tabla, id) => {
+  const [rows] = await pool.query(`SELECT * FROM ${tabla} WHERE id_hotel = ${id};`)
+  return rows;
+};
 const allUsers = async (tabla) => {
   const [rows] = await pool.query(`SELECT * FROM ${tabla};`)
   return rows;
@@ -187,4 +172,89 @@ const getImages = async (tabla) => {
   })
   return await rows.map(el => el)
 };
-module.exports = { updateHotel, allUsers, postImage, postImgUser, getImages, getHotels, getHotel, postUser, getUser, query, getImagesById,getUserImg, postHotel, getHotelByUser, updateUSer , query2};
+
+
+
+
+//_____________________________________UPDATE_____________________________________
+
+
+const updateUser = async (tabla, body, userId) => {
+  try {
+    const result = await pool.query(`UPDATE ${tabla} SET ? WHERE id = ?`, [body, userId]);
+    return result;
+  } catch (error) {
+    console.error('Error en updateUser:', error);
+    throw error;
+  }
+};
+const updateHotel = async (tabla, body, id) => {
+  try {
+    const fieldsToUpdate = {};
+    const allowedFields = ['name', 'location', 'capacity', 'type', 'camas', 'baño_privado', 'wifi', 'restaurant', 'lavanderia', 'parqueadero', 'aire_acondicionado', 'precio_por_habitacion', 'description'];
+
+    // Filtra solo los campos permitidos y presentes en el objeto body
+    Object.keys(body).forEach(key => {
+      if (allowedFields.includes(key)) {
+        fieldsToUpdate[key] = body[key];
+      }
+    });
+
+    if (Object.keys(fieldsToUpdate).length === 0) {
+      // Si no hay campos para actualizar, no se realiza ninguna operación
+      console.log('No hay campos para actualizar.');
+      return;
+    }
+
+    // Construye la consulta SQL dinámica para actualizar los campos seleccionados
+    const sql = `UPDATE ?? SET ? WHERE id = ?`;
+    const values = [tabla, fieldsToUpdate, id];
+
+    // Ejecuta la consulta SQL
+    const result = await pool.query(sql, values);
+    console.log('Resultado de la actualización en la base de datos:', result);
+    return result;
+  } catch (error) {
+    console.error('Error en updateHotel:', error);
+    throw error;
+  }
+};
+
+
+
+
+//______________________________________DELETE________________________________________
+
+const deleteRating = async (tabla, id) => {
+  const result = await pool.query(`DELETE * FROM ${tabla} WHERE id=${id}`)
+  return result;
+  //aqui tiene que llegar el id del comentario
+};
+
+
+
+module.exports = {
+  updateHotel,
+   allUsers, 
+   postImage, 
+   postImgUser, 
+   getImages, 
+   getHotels, 
+   getHotel, 
+   postUser, 
+   getUser, 
+   query, 
+   getImagesById, 
+   getUserImg, 
+   postHotel, 
+   getHotelByUser, 
+   query2, 
+   updateUser,
+   postComment,
+   postRate,
+   getRatingHotel,
+   getRatingUser,
+   getCommentUser,
+   getCommentHotel,
+   deleteRating
+};

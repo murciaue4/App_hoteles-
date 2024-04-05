@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import style from "./Form01.module.css";
-import { Link } from "react-router-dom";
 import Errors from "../alerts/Errors";
 
 const Form01 = ({ handleSetShowForm01 }) => {
@@ -22,9 +20,9 @@ const Form01 = ({ handleSetShowForm01 }) => {
     }, 2000);
   };
   const cambiar = () => {
-    handleSetShowForm01(false);
+    handleSetShowForm01();
   };
-  const handleShowPassword = ({ target }) => {
+  const handleShowPassword = () => {
     setShoePassword(!showPassword);
   };
 
@@ -58,7 +56,7 @@ const Form01 = ({ handleSetShowForm01 }) => {
           console.log(err);
           return;
         } else {
-          location.reload();
+          cambiar();
         }
       } catch (error) {}
     };
@@ -66,16 +64,18 @@ const Form01 = ({ handleSetShowForm01 }) => {
   };
 
   return (
-    <div className={style.Form01}>
-      <h1>Crea una cuenta </h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <br />
-          <br />
+    <div class="flex flex-col justify-around items-center h-auto w-full p-4">
+      <h1 className="mb-5">Crea una cuenta </h1>
+      <form
+        classame="flex flex-col justify-center items-center text-sm font-medium h-full mb-9"
+        onSubmit={handleSubmit}
+      >
+        <div className="flex flex-col justify-center">
+          
           <label htmlFor="accountType">
             Tipo de cuenta :
             <select
-              className={style.select}
+              className="divInputs mb-3 w-full outline-none  pl-1 border border-slate-300 h-8 rounded-xl text-center "
               id="usertype"
               name="usertype"
               value={formData.usertype}
@@ -88,11 +88,12 @@ const Form01 = ({ handleSetShowForm01 }) => {
             </select>
           </label>
 
-          <br />
+          
           <label htmlFor="name">
             Nombre :
-            <br />
+            
             <input
+              className="divInputs  mb-3  w-full outline-none  pl-1 border border-slate-300 h-8 rounded-xl text-center "
               required={true}
               type="text"
               id="name"
@@ -101,13 +102,14 @@ const Form01 = ({ handleSetShowForm01 }) => {
               onChange={handleInputChange}
             />
           </label>
-          <br />
+          
 
           {formData.usertype != "Empresa" ? (
             <label htmlFor="lastname">
               Apellidos :
-              <br />
+              
               <input
+                className="divInputs w-full mb-3  outline-none  pl-1 border border-slate-300 h-8 rounded-xl text-center "
                 required={true}
                 type="text"
                 id="lastname"
@@ -116,15 +118,14 @@ const Form01 = ({ handleSetShowForm01 }) => {
                 onChange={handleInputChange}
               />
             </label>
-          ) : (
-            null
-          )}
+          ) : null}
 
-          <br />
+          
           <label htmlFor="email">
             Correo Electrónico :
-            <br />
+            
             <input
+              className="divInputs mb-3  w-full outline-none  pl-1 border border-slate-300 h-8 rounded-xl text-center "
               required={true}
               type="email"
               id="email"
@@ -133,18 +134,18 @@ const Form01 = ({ handleSetShowForm01 }) => {
               onChange={handleInputChange}
             />
           </label>
-          <br />
+          
           <label htmlFor="email">
-            @Username : <br />{" "}
-            <p>
+            @Username :
+            <p className="text-xs  mb-1 font-normal text-blue-600">
               <i>
                 Crea un nombre de usuario, <br />
                 podras iniciar session con el luego.
               </i>
             </p>
-            <br />
+            
             <input
-              placeholder="Username"
+              className="divInputs mb-3  w-full outline-none  pl-1 border border-slate-300 h-8 rounded-xl text-center "
               required={true}
               type="text"
               id="username"
@@ -153,18 +154,19 @@ const Form01 = ({ handleSetShowForm01 }) => {
               onChange={handleInputChange}
             />
           </label>
-          <br />
+          
           <label htmlFor="password">
             Contraseña :
-            <br />
-            <p>
+            
+            <p className="text-xs  mb-1 font-normal text-blue-600">
               <i>
                 8 Digitos, Mayúsculas, minúsculas, <br />
                 al menos un numero.
               </i>
             </p>
-            <br />
+            
             <input
+              className="divInputs w-full outline-none  pl-1 border border-slate-300 h-8 rounded-xl text-center "
               required={true}
               type={showPassword ? "text" : "password"}
               id="password"
@@ -173,21 +175,25 @@ const Form01 = ({ handleSetShowForm01 }) => {
               onChange={handleInputChange}
             />
           </label>
-
-          <input
-            className={style.showPassword}
-            type="checkbox"
-            onChange={handleShowPassword}
-          />
-          <br />
+          <div className="w-full flex justify-end  mb-9 ">
+            <span
+              onClick={handleShowPassword}
+              className="text-xs text-blue-600 font-medium cursor-pointer hover:underline select-none"
+            >
+              Mostar contraseña
+            </span>
+          </div>
+          
         </div>
-        <button className="" type="submit">
-          Crear cuenta
-        </button>
+        <div className="w-full flex justify-center">
+          <button  type="submit" className=" w-36 p-2 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-900  mb-4 ">
+            Crear cuenta
+          </button>
+        </div>
       </form>
-      <br />
-      <span onClick={cambiar}>Ya tengo una cuenta</span>
-      <br />
+      
+      <span onClick={cambiar} className="text-sm font-semibold cursor-pointer text-blue-600 hover:text-blue-900  mb-3 ">Ya tengo una cuenta</span>
+      
 
       {err.error ? <Errors error={err} /> : null}
     </div>

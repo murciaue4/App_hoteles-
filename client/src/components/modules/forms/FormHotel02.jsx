@@ -12,9 +12,7 @@ const AddHotelForm02 = (props) => {
   const { token, user } = useContext(loginContext);
   const [formData, setFormData] = useState(new FormData());
   const [formData02, setFormData02] = useState({ description: "" });
-  console.log("vgsdfsdf: ", formData02);
   const [isLoaded, setIsLoaded] = useState(false);
-
   const handleSetErr = (err) => {
     setErr(err);
     setTimeout(() => {
@@ -41,7 +39,7 @@ const AddHotelForm02 = (props) => {
           },
         };
         const response = await axios.post(
-          `http://localhost:3333/user/upload/${props.idInserted}`,
+          `http://localhost:3333/user/upload/${props.idInserted}/${user.id}`,
           data,
           config
         );
@@ -57,14 +55,10 @@ const AddHotelForm02 = (props) => {
   const handleChangeForms = (e) => {
     const { value } = e.target;
     setFormData02({ id: idInserted, description: value });
-    console.log("formData02 en el front: ", formData02);
   };
 
   const sendUpData = async (e) => {
     e.preventDefault();
-
-    console.log("formData02 antes de enviar:", formData02);
-
     const config = {
       method: "PATCH",
       headers: {
@@ -76,72 +70,88 @@ const AddHotelForm02 = (props) => {
 
     try {
       const response = await fetch(
-        `http://localhost:3333/user/hoteles/${idInserted}`,
+        `http://localhost:3333/user/hoteles/${idInserted}/${user.id}`,
         config
       );
       const data = await response.json();
 
       console.log("Respuesta de fetch en FormHotel02:", data);
+      if (response.status === 200 && !data.error) {
+        window.location.reload();
+      }
     } catch (error) {
       handleSetErr(error.message || "Error en la solicitud.");
     }
   };
 
   return (
-    <div className={style.container}>
-      <div className={style.formHotel}>
-        <h1>PUBLICA TU HOTEL</h1>
-        <br />
-
-        <form onSubmit={sendImage}>
-          <p>
-            <b> Agrega imagenes de tu hotel</b> ({" "}
+    <div className="w-full h-full grid place-items-center">
+      <div className="shadow-md max-w-sm p-8 rounded-lg w-full border border-black ">
+        <h1 className="text-xl font-semibold mb-4 text-center">
+          PUBLICA TU HOTEL
+        </h1>
+        <form onSubmit={sendImage} className="w-full flex flex-col">
+          <p className="mb-4">
+            <b> Agrega imágenes de tu hotel</b> 
+            <br />(
             <i>
-              Recuerda publicar imagenes de buena calidad y que correspondan al
-              inmueble que estas publicando
+              Recuerda publicar imágenes de buena calidad y que correspondan al
+              inmueble que estás publicando
             </i>{" "}
             )
           </p>
-
-          <br />
-          <label className={isLoaded ? style.label : style.label2}>
-            + Selecionar una imagen
+          <label
+            className={`${
+              isLoaded ? "border-green-500" : "border-gray-700"
+            } border-dashed border-4 rounded-lg p-1 cursor-pointer w-full h-20 grid content-center text-center`}
+          >
+            + Seleccionar una imagen
             <input
-              className={style.input}
+              className="hidden"
               type="file"
               name="image"
               onChange={handleChangeImage}
             />
           </label>
-          <div className={style.divButton}>
-            <button onClick={sendImage}>Subir imagen</button>
+          <div className="mb-4">
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full"
+              onClick={sendImage}
+            >
+              Subir imagen
+            </button>
           </div>
-          <span>
+          <span className="mb-4">
             <b>*</b> Si quieres agregar una nueva imagen pulsa nuevamente el
             icono de arriba
           </span>
           <br />
         </form>
         <form onSubmit={sendUpData}>
-          <label className={style.descLabel}>Descripcion:</label>
-          <span>
-            (Escribe una descripcion detallada de tu hotel, las personas
-            veran esto en los resultados de sus busquedas, por favor utiliza
-            bien este espacio).
-          </span>
+          <label className="font-semibold mb-2 text-lg">Descripcion:</label>
+          <br />
+          <i>
+            (Escribe una descripción detallada de tu hotel, las personas verán
+            esto en los resultados de sus búsquedas, por favor utiliza bien este
+            espacio).
+          </i>
           <br />
           <textarea
-            className={style.descInput}
+            className="outline-none border border-gray-500 font-normal h-40 w-full p-2 rounded-lg mb-2"
             name="description"
             value={formData02.description}
             onChange={handleChangeForms}
             required
           />
           <span className="w-80">{formData02.description.length}/500</span>
-          
           <br />
-          <div className={style.divButton}>
-            <button type="submit">Finalizar</button>
+          <div className="mb-4">
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded-lg w-full"
+              type="submit"
+            >
+              Finalizar
+            </button>
           </div>
         </form>
       </div>

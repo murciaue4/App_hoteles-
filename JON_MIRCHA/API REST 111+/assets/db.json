@@ -1,0 +1,222 @@
+{
+  "titulares": [
+    
+      
+        {
+          "id": 10,
+          "self_Id": "JG-001",
+          "nombre": "Lionel Messi",
+          "edad": 34,
+          "posicion": "Delantero",
+          "piernaHabil": "Izquierda",
+          "imagen": "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg"
+        },
+        {
+          "id": 9,
+          "self_Id": "JG-002",
+          "nombre": "Robert Lewandowsky",
+          "edad": 32,
+          "posicion": "Delantero",
+          "piernaHabil": "Derecha",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+        {
+          "id": 11,
+          "self_Id": "JG-003",
+          "nombre": "Ousmane Dembélé",
+          "edad": 24,
+          "posicion": "Delantero",
+          "piernaHabil": "Izquierda",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+      
+     
+        {
+          "id": 4,
+          "self_Id": "JG-004",
+          "nombre": "Frenkie de Jong",
+          "edad": 24,
+          "posicion": "Centrocampista",
+          "piernaHabil": "Derecha",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+        {
+          "id": 5,
+          "self_Id": "JG-005",
+          "nombre": "Sergio Busquets",
+          "edad": 32,
+          "posicion": "Centrocampista",
+          "piernaHabil": "Derecha",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+        {
+          "id": 8,
+          "self_Id": "JG-006",
+          "nombre": "Pedri",
+          "edad": 18,
+          "posicion": "Centrocampista",
+          "piernaHabil": "Ambidiestro",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+      
+        {
+          "id": 7,
+          "self_Id": "JG-007",
+          "nombre": "Ronald Araujo",
+          "edad": 23,
+          "posicion": "Defensa central",
+          "piernaHabil": "Derecha",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+        {
+          "id": 6,
+          "self_Id": "JG-008",
+          "nombre": "Jordi Alba",
+          "edad": 32,
+          "posicion": "Lateral izquierdo",
+          "piernaHabil": "Izquierda",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+        {
+          "id": 2,
+          "self_Id": "JG-009",
+          "nombre": "Clement Lenglet",
+          "edad": 26,
+          "posicion": "Defensa central",
+          "piernaHabil": "Zurda",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+        {
+          "id": 3,
+          "self_Id": "JG-010",
+          "nombre": "Gerard Piqué",
+          "edad": 34,
+          "posicion": "Defensa",
+          "piernaHabil": "Derecha",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        },
+      
+        {
+          "id": 1,
+          "self_Id": "JG-011",
+          "nombre": "Marc-André ter Stegen",
+          "edad": 29,
+          "posicion": "Portero",
+          "piernaHabil": "Ambidiestro",
+          "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+        }
+      
+    
+  ],
+  "suplentes": [
+    {
+      "id": 1,
+      "self_Id": "JG-012",
+      "nombre": "Neto",
+      "edad": 32,
+      "posicion": "Portero",
+      "piernaHabil": "Derecha",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 2,
+      "self_Id": "JG-013",
+      "nombre": "Sergiño Dest",
+      "edad": 20,
+      "posicion": "Defensa",
+      "piernaHabil": "Derecha",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 3,
+      "self_Id": "JG-014",
+      "nombre": "Sergi Roberto",
+      "edad": 29,
+      "posicion": "Centrocampista",
+      "piernaHabil": "Derecha",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 4,
+      "self_Id": "JG-015",
+      "nombre": "Miralem Pjanić",
+      "edad": 31,
+      "posicion": "Centrocampista",
+      "piernaHabil": "Derecha",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 5,
+      "self_Id": "JG-016",
+      "nombre": "Ansu Fati",
+      "edad": 18,
+      "posicion": "Delantero",
+      "piernaHabil": "Izquierda",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 6,
+      "self_Id": "JG-017",
+      "nombre": "Martin Braithwaite",
+      "edad": 30,
+      "posicion": "Delantero",
+      "piernaHabil": "Derecha",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 7,
+      "self_Id": "JG-018",
+      "nombre": "Junior Firpo",
+      "edad": 24,
+      "posicion": "Defensa",
+      "piernaHabil": "Izquierda",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 8,
+      "self_Id": "JG-019",
+      "nombre": "Gabi",
+      "edad": 18,
+      "posicion": "Centrocampista",
+      "piernaHabil": "Derecha",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 9,
+      "self_Id": "JG-020",
+      "nombre": "Ferran Torres",
+      "edad": 21,
+      "posicion": "Delantero",
+      "piernaHabil": "Derecha",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    },
+    {
+      "id": 10,
+      "self_Id": "JG-021",
+      "nombre": "Marcos Alonso",
+      "edad": 34,
+      "posicion": "Defensa",
+      "piernaHabil": "Derecha",
+      "imagen": "https://via.placeholder.com/200x200.png?text=Player+Image"
+    }
+
+  ],
+  "posiciones": [
+    {
+      "id": 1,
+      "nombre": "Delantero"
+    },
+    {
+      "id": 2,
+      "nombre": "Centrocampista"
+    },
+    {
+      "id": 3,
+      "nombre": "Defensa"
+    },
+    {
+      "id": 4,
+      "nombre": "Portero"
+    }
+  ]
+}

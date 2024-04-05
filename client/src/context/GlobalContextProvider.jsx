@@ -1,11 +1,12 @@
 import { loginContext } from "./loginContext.js";
 import { useEffect, useState } from "react";
-import { getUserLocation } from "../helpers";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const GlobalContextProvider = ({ children }) => {
   const URLStatic = "http://localhost:3333/";
- 
+  const [allHotels, setAllHotels] = useState(null)
+  const [isLoadingHotels, setIsLoadingHotels] = useState(true);
 
   const localTokenExtractor = () => {
     const localTk = window.localStorage.getItem("sessionLogin");
@@ -39,14 +40,15 @@ const GlobalContextProvider = ({ children }) => {
   const [user, setUser] = useState(getLocalSessionUser);
   const [imgUser, setImgUser] = useState(null);
   const [imageChanged, setImageChanged] = useState(false);
- 
 
   const addToFavorites = (hotelId) => {
     setFavourites((prevFavourites) => [...prevFavourites, hotelId]);
   };
 
   const removeFromFavorites = (hotelId) => {
-    setFavourites((prevFavourites) => prevFavourites.filter((id) => id !== hotelId));
+    setFavourites((prevFavourites) =>
+      prevFavourites.filter((id) => id !== hotelId)
+    );
   };
 
   const isFavorite = (hotelId) => favourites.includes(hotelId);
@@ -56,10 +58,38 @@ const GlobalContextProvider = ({ children }) => {
     window.localStorage.removeItem("sessionLogin");
     window.localStorage.removeItem("sessionLoginUser");
     setIsLogin(getLocalSession);
-    window.location.reload()
+    window.location.reload();
   };
 
-  //Obtengo la imagen de perfil desde la base de datos
+
+
+
+  //-----------------------LLAMADOS AL SERVER-----------------------------
+
+//obtengo todos los hoteles
+useEffect(() => {
+  const getData = async (params) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    };
+
+    await axios.get(URLStatic+'user/hoteles/', config).then((res) => {
+      setAllHotels(res.data);
+    });
+
+    await axios.get(URLStatic+ "user/images/", config);
+    setTimeout(() => {
+      setIsLoadingHotels(false);
+    }, 100);
+  };
+  getData();
+}, []);
+
+
+  //Obtengo la imagen de perfil 
   useEffect(() => {
     const getProfileImgUser = async () => {
       if (user) {
@@ -88,25 +118,29 @@ const GlobalContextProvider = ({ children }) => {
     getProfileImgUser();
   }, [user, token, imageChanged]);
 
-  
   const [favourites, setFavourites] = useState([]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (user) {
       const uniqueStorageKey = `favorites_${user.id}`;
       const storedFavorites = localStorage.getItem(uniqueStorageKey);
-      if (JSON.parse(storedFavorites).length > 0) {
-        console.log('SI HAY!!');
-        setFavourites(JSON.parse(storedFavorites));
+      if (storedFavorites) {
+        if (JSON.parse(storedFavorites).length > 0) {
+          console.log("SI HAY!!");
+          setFavourites(JSON.parse(storedFavorites));
+        } else {
+          const uniqueStorageKey = `favorites_${user.id}`;
+
+          localStorage.setItem(uniqueStorageKey, JSON.stringify(favourites));
+        }
       }
     }
   }, [user]);
   // Guarda los favoritos en el localStorage con un nombre único para cada usuario
   useEffect(() => {
-    
     if (user) {
       const uniqueStorageKey = `favorites_${user.id}`;
-     
+
       localStorage.setItem(uniqueStorageKey, JSON.stringify(favourites));
     }
     console.log("setITEM");
@@ -114,7 +148,25 @@ const GlobalContextProvider = ({ children }) => {
 
   // Carga los favoritos desde el localStorage al montar el componente
 
+  const [showAlertLogUp, setShowAlertLogUp] = useState(false);
+  const handleSetShowAlert = () => {
+    setShowAlertLogUp(!showAlertLogUp);
+  };
+  const navigate = useNavigate();
 
+  const handleFavouritesClick = () => {
+    if (isLogin) {
+      navigate("/favorites"); // Navega a "/favorites" si el usuario está autenticado
+    } else {
+      setShowAlertLogUp(true); // Muestra el componente AlertLogUp si el usuario no está autenticado
+    }
+  };
+  const handleSetFavouriteClick = (e) => {
+    e.stopPropagation();
+    if (!isLogin){
+      setShowAlertLogUp(true); // Muestra el componente AlertLogUp si el usuario no está autenticado
+    }
+  };
   return (
     <loginContext.Provider
       value={{
@@ -132,6 +184,15 @@ const GlobalContextProvider = ({ children }) => {
         addToFavorites,
         removeFromFavorites,
         isFavorite,
+        showAlertLogUp,
+        setShowAlertLogUp,
+        handleFavouritesClick,
+        handleSetShowAlert,
+        handleSetFavouriteClick,
+        allHotels, 
+        setAllHotels,
+        isLoadingHotels, 
+        setIsLoadingHotels
       }}
     >
       {children}

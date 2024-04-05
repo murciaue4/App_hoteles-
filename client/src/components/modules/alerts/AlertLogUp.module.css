@@ -1,0 +1,23 @@
+.alertContainer {
+    animation: slideIn 0.5s forwards;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  .AlertLogUp {
+    border: 1px solid white;
+  }
+  
+  @media (max-width: 640px) {
+    .AlertLogUp {
+      width: 100vw;
+      font-size: large;
+    }
+  }
