@@ -64,7 +64,7 @@ const Form01 = ({ handleSetShowForm01 }) => {
   };
 
   return (
-    <div class="flex flex-col justify-around items-center h-auto w-full p-4">
+    <div className="flex flex-col justify-around items-center h-auto w-full p-4">
       <h1 className="mb-5">Crea una cuenta </h1>
       <form
         classame="flex flex-col justify-center items-center text-sm font-medium h-full mb-9"

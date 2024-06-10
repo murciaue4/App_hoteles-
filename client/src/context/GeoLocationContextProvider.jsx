@@ -16,6 +16,27 @@ const GeoLocationContextProvider = ({ children }) => {
         lng: -71.362796,
       },
     },
+    {
+      name: "El Oasis",
+      choords: {
+        lat: 3.775363981158301,
+        lng: -71.65874505711278,
+      },
+    },
+    {
+      name: "Santa Helena",
+      choords: {
+        lat: 3.900004652719744,
+        lng: -71.49067531960965,
+      },
+    },
+    {
+      name: "Buenos Aires",
+      choords: {
+        lat: 3.7875757421679035,
+        lng: -71.38192771437281,
+      },
+    },
   ];
   const getUserCurrentLocation = async () => {
     try {

@@ -14,7 +14,6 @@ import Maps from "../Maps/Mapcomponent";
 const Home = () => {
   const { isLoadingHotels, allHotels } = useContext(loginContext);
 
-  console.log("render");
   //estados y manejadores para la seccion de desplegables
   const [showPrices, setShowPrices] = useState(false);
   const [showFiltros, setshowFiltros] = useState(false);
@@ -1716,7 +1715,7 @@ const Home = () => {
 
               {!showSortBy ? null : (
                 <div className=" z-10 top-0 h-full w-full left-0 mt-1 p-3 border flex flex-col items-center justify-center text-start bg-white shadow-sm rounded-md shadow-black fixed">
-                  <button className="w-full h-full ">
+                  <div className="w-full h-full ">
                     <span className=" w-full h-4/6 font-bold flex align-middle ">
                       <div className="flex flex-col justify-around items-start text-2xl">
                         <div>
@@ -1808,7 +1807,7 @@ const Home = () => {
                         </div>
                       </div>
                     </span>
-                  </button>
+                  </div>
 
                   {/*BOTONES */}
                   <div className="  py-2 w-full h-20 ">

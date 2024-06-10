@@ -1,17 +1,19 @@
 import React, { useContext, useState } from "react";
-import { Navigate } from "react-router-dom";
+
 import axios from "axios";
 import { loginContext } from "../../../context/loginContext";
-import style from "./FormHotel02.module.css";
+
 import Errors from "../alerts/Errors";
 
 const AddHotelForm02 = (props) => {
-  let idInserted = props.idInserted;
-  console.log(props.idInserted);
+
+  console.log(props.formData);
   const [err, setErr] = useState({});
   const { token, user } = useContext(loginContext);
+
   const [formData, setFormData] = useState(new FormData());
   const [formData02, setFormData02] = useState({ description: "" });
+
   const [isLoaded, setIsLoaded] = useState(false);
   const handleSetErr = (err) => {
     setErr(err);

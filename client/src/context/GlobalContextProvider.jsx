@@ -126,7 +126,6 @@ useEffect(() => {
       const storedFavorites = localStorage.getItem(uniqueStorageKey);
       if (storedFavorites) {
         if (JSON.parse(storedFavorites).length > 0) {
-          console.log("SI HAY!!");
           setFavourites(JSON.parse(storedFavorites));
         } else {
           const uniqueStorageKey = `favorites_${user.id}`;
@@ -143,7 +142,6 @@ useEffect(() => {
 
       localStorage.setItem(uniqueStorageKey, JSON.stringify(favourites));
     }
-    console.log("setITEM");
   }, [favourites, user]);
 
   // Carga los favoritos desde el localStorage al montar el componente
