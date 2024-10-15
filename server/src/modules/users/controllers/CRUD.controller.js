@@ -1,7 +1,7 @@
 const error = require('../../../middlewares/errors');
 const respuestas = require('../../../red/respuestas');
 const auth = require('../../auth');
-
+const contHoteles = ('.')
 
 const T_USERS = 'user';
 const T_HOTEL = 'hoteles';
@@ -51,7 +51,7 @@ module.exports = function (dbIn) {
             }
     
             // Insertar o actualizar hotel
-            const result = await db.postHotel(T_HOTEL, hotel);
+            const result = await db.postHotel(T_HOTEL, hotel) ;
             console.log('controller-user/ Resultado de postHotel:', result);
     
             // Responder con éxito
