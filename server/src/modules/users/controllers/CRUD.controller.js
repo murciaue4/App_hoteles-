@@ -16,121 +16,129 @@ module.exports = function (dbIn) {
     if (!db) {
         db = require('../../../db/databse');
     }
-
+    const handleError = (message, statusCode, req, res) => {
+        const error = new Error(message);
+        error.statusCode = statusCode;
+        throw error;
+    };
 
     //_______________POST________________________________________
 
 
     const postHoteles = async (req, res) => {
-
         try {
-            const body = req.body;
-            const consulta = await db.getHotels(T_HOTEL);
-            const hoteles = consulta.map(el => ({ id: el.id, name: el.name }));
-            const isDuplicateId = hoteles.map(el => el.id).includes(body.id);
-            const isDuplicateName = hoteles.map(el => el.name).includes(body.name)
-            const [findDuplicated] = hoteles.filter(el => el.email == body.email);
-
-            const hotel = { ...body };
-
-            if (isDuplicateName) {
-                if (body.id == 0) {
-                    throw error('Ya existe un HOTEL con este nombre', 401)
-                }
-                if (isDuplicateId && body.id == findDuplicated.id) {
-                    hotel['id'] = body.id
-                }
-            };
-
-            if (isDuplicateId && body.id == findDuplicated.id) {
-                hotel.id = body.id
-            };
-
-            const result1 = await db.postHotel(T_HOTEL, hotel);
-            console.log('controller-user/ Result of postHotel:', result1);
-
-            respuestas.sucess(req, res, result1, 200)
-
-        } catch (error) {
-
-            respuestas.error(req, res, error, error.statusCode)
-
-        }
-    };
-    const postUsers = async (req, res) => {
-
-        try {
-            const body = req.body;
-           let userTypeOf = ((body.usertype === 'propietario') && true) || false;
-            const isUsername = await db.query(T_AUTH, body.username);
-            const query = await db.allUsers(T_USERS);
-            console.log('isUsername: ', isUsername);
-            const createdUsers = query.map(el => ({ id: el.id, email: el.email }));
-            const emails = createdUsers.map(el => el.email);
-            const [findByEmail] = createdUsers.filter(el => el.email == body.email);
-            const isDuplicateEmail = emails.includes(body.email)
-            const isId = createdUsers.map(el => el.id).includes(body.id);
-            console.log('findByEmail:', findByEmail);
-            let result2;
-            let insertIdConsulta1;
-
-            let user = {
-
-                name: body.name,
-                lastname: body.lastname,
-                email: body.email,
-                usertype: userTypeOf
-            };
-            if (isId && body.id == findByEmail.id) {
-                user['id'] = body.id
-            };
-
-            if (isUsername.length > 0) {
-
-                console.log('isUsername: ', isUsername);
-                throw error('username ya usado/////', 401)
+            const { id, name, email, ...rest } = req.body;
+    
+            // Obtener lista de hoteles existentes
+            const hoteles = await obtenerHotelesExistentes();
+    
+            // Validar duplicados de nombre e id
+            const isDuplicateName = hoteles.some(hotel => hotel.name === name);
+            const isDuplicateId = hoteles.some(hotel => hotel.id === id);
+            const hotelDuplicado = hoteles.find(hotel => hotel.email === email);
+    
+            // Construir objeto hotel
+            const hotel = { id, name, email, ...rest };
+    
+            // Verificar si el nombre del hotel ya existe
+            if (isDuplicateName && id === 0) {
+                return handleError('Ya existe un HOTEL con este nombre', 401, req, res);
             }
-            if (isDuplicateEmail) {
-                if (body.id == 0) {
-                    console.log('user: ', user);
-                    throw error('email ya usado/////', 401)
-                }
-                if (isId && body.id == findByEmail.id) {
-                    user['id'] = findByEmail.id
-
-                }
-            };
-
-
-
-
-            const result1 = await db.postUser(T_USERS, user);
-
-            console.log('primera consulta:', result1);
-            insertIdConsulta1 = result1[0].insertId;
-            if (insertIdConsulta1 == 0) {
-                insertIdConsulta1 = user.id
-            };
-
-            if (body.username && body.password) {
-                result2 = await auth.insertLog({
-
-                    id: insertIdConsulta1,
-                    email: body.email,
-                    username: body.username,
-                    password: body.password
-                });
-
-            };
-
-            respuestas.sucess(req, res, [...result1, ...result2], 200)
-
+    
+            // Si el hotel ya existe y tiene el mismo id, actualizar su id
+            if (isDuplicateId && hotelDuplicado && id === hotelDuplicado.id) {
+                hotel.id = id;
+            }
+    
+            // Insertar o actualizar hotel
+            const result = await db.postHotel(T_HOTEL, hotel);
+            console.log('controller-user/ Resultado de postHotel:', result);
+    
+            // Responder con éxito
+            return respuestas.sucess(req, res, result, 200);
+    
         } catch (error) {
-
-            respuestas.error(req, res, error, error.estatusCode)
-
+            return respuestas.error(req, res, error, error.statusCode || 500);
         }
     };
+    
+    // Función para obtener la lista de hoteles existentes
+    const obtenerHotelesExistentes = async () => {
+        const consulta = await db.getHotels(T_HOTEL);
+        return consulta.map(hotel => ({
+            id: hotel.id,
+            name: hotel.name,
+            email: hotel.email
+        }));
+
+    };
+    
+    // Función para manejar errores
+   
+    const postUsers = async (req, res) => {
+        try {
+            const { name, lastname, email, usertype, id, username, password } = req.body;
+    
+            // Definir el tipo de usuario
+            const isPropietario = usertype === 'propietario';
+    
+            // Verificar si el username ya existe
+            const isUsernameExists = await db.query(T_AUTH, username);
+            if (isUsernameExists.length > 0) {
+                return handleError('El nombre de usuario ya está en uso.', 401, req, res);
+            }
+    
+            // Obtener todos los usuarios existentes
+            const users = await db.allUsers(T_USERS);
+            const existingEmails = users.map(user => user.email);
+            const existingIds = users.map(user => user.id);
+    
+            // Verificar si el correo electrónico ya existe
+            if (existingEmails.includes(email)) {
+                if (id === 0) {
+                    return handleError('El correo electrónico ya está en uso.', 401, req, res);
+                }
+            }
+    
+            // Construir objeto usuario
+            const user = {
+                name,
+                lastname,
+                email,
+                usertype: isPropietario
+            };
+    
+            // Actualizar usuario existente si el id es válido
+            if (existingIds.includes(id)) {
+                user['id'] = id;
+            }
+    
+            // Insertar el usuario en la base de datos
+            const result1 = await db.postUser(T_USERS, user);
+            let userId = result1[0]?.insertId || id;
+    
+            // Si se proporcionan credenciales, insertar en la tabla de autenticación
+            let result2 = [];
+            if (username && password) {
+                result2 = await auth.insertLog({
+                    id: userId,
+                    email,
+                    username,
+                    password
+                });
+            }
+    
+            // Respuesta exitosa
+            return respuestas.sucess(req, res, [...result1, ...result2], 200);
+    
+        } catch (error) {
+            return respuestas.error(req, res, error, error.statusCode || 500);
+        }
+    };
+    
+    // Función para manejar errores y mejorar la consistencia
+    
+    
     const postImages = async (req, res) => {
 
         try {
@@ -185,8 +193,8 @@ module.exports = function (dbIn) {
 
     const getAllImages = async (req, res) => {
         try {
-            const rows = await db.getImages(T_IMAGE);
-            const data = rows.map(el => el.name)
+            const res = await db.getImages(T_IMAGE);
+            const data = res.map(el => el.name)
             respuestas.sucess(req, res, data, 200)
         } catch (error) {
             console.log(error);
