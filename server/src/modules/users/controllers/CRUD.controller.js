@@ -61,6 +61,7 @@ module.exports = function (dbIn) {
 
         try {
             const body = req.body;
+           let userTypeOf = ((body.usertype === 'propietario') && true) || false;
             const isUsername = await db.query(T_AUTH, body.username);
             const query = await db.allUsers(T_USERS);
             console.log('isUsername: ', isUsername);
@@ -78,7 +79,7 @@ module.exports = function (dbIn) {
                 name: body.name,
                 lastname: body.lastname,
                 email: body.email,
-                usertype: body.usertype
+                usertype: userTypeOf
             };
             if (isId && body.id == findByEmail.id) {
                 user['id'] = body.id
