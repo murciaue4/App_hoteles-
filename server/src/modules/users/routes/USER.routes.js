@@ -7,6 +7,10 @@ const { logIn } = require('../../auth');
 
 
 const router = Router();
+// generar una ruta ping
+router.get('/ping', (req, res) => {
+    res.status(200).json({ message: 'pong' });
+});
 
 //__________________________POST__________________________
 router.post('/upload/:id_hotel/:id_user', seguridad(), postImages)
