@@ -129,7 +129,9 @@ const HotelCard = ({ hotel }) => {
             <div className="flex justify-between mb-2 bg-slate-100 rounded-xl h-full">
               <section className="w-full md:w-1/2 p-1 flex flex-col">
                 <div className={`h-10 w-full md:w-10 grid place-items-center font-bold rounded-lg border ${getRateColor(hotel.rating.promedio, hotel.rating.totalRates)} `}>
-                  {hotel.rating.promedio.toFixed(1)}
+                  {hotel.rating.promedio > 9.9
+                ? hotel.rating.promedio.toFixed(0)
+                : hotel.rating.promedio.toFixed(1)}
                 </div>
                 <div className="flex flex-col text-sm ml-1 w-full">
                   <span>

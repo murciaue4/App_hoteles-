@@ -323,7 +323,7 @@ module.exports = function (dbIn) {
             respuestas.sucess(req, res, data, 200)
         } catch (error) {
             console.log(error);
-            respuestas.error(req, res, error, 500)
+            respuestas.error(req, res, error, 500) 
         }
     };
     const getAllHotels = async (req, res) => {

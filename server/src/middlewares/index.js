@@ -23,7 +23,7 @@ const uploader = multer({
     }
     cb('Error: debe ser un archivo de imagen válido');
   }
-}).array('image');
+}).array('image'); 
 
 module.exports = {
   uploader

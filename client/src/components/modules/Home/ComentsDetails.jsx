@@ -46,7 +46,10 @@ const ComentsDetails = ({ hotel }) => {
         (rating) => rating.rating_value
       );
       const totalRatings = ratingsArray.length;
-      const sumRatings = await ratingsArray.reduce((acc, curr) => acc + curr, 0);
+      const sumRatings = await ratingsArray.reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
       const average = totalRatings > 0 ? sumRatings / totalRatings : 0;
       setAverageRating(average);
       setTotalRatings(totalRatings);
@@ -59,25 +62,22 @@ const ComentsDetails = ({ hotel }) => {
     Promise.all(fetchComments(), fetchRatings());
   }, [hotel.id]);
 
-
-
-
   const handleSendNewComent = async () => {
     if (newComent.length === 0 || newRate === 0) {
       alert("Por favor, proporciona tanto un comentario como una calificación");
       return;
     }
-  
+
     const commentToSend = {
       user: user.username,
       comment_text: newComent,
     };
-  
+
     const rateToSend = {
       user: user.username,
       rating_value: newRate,
     };
-  
+
     try {
       const config = {
         headers: {
@@ -85,21 +85,20 @@ const ComentsDetails = ({ hotel }) => {
           Authorization: token,
         },
       };
-  
+
       await axios.post(
         `${URLStatic}user/hoteles/${hotel.id}/comments/${user.id}`,
         commentToSend,
         config
       );
-  
+
       await axios.post(
         `${URLStatic}user/hoteles/${hotel.id}/ratings/${user.id}`,
         rateToSend,
         config
       );
       // Actualizar comentarios y calificaciones después de enviar el nuevo comentario
-      fetchComments(), 
-      fetchRatings()
+      fetchComments(), fetchRatings();
       // Limpiar campos de entrada después de enviar el comentario
       setNewComent("");
       setNewRate(0);
@@ -107,8 +106,6 @@ const ComentsDetails = ({ hotel }) => {
       console.error("Error al enviar tu opinión:", error);
     }
   };
-
- 
 
   const getLegibleDate = (timeStamp) => {
     const fechaUTC = new Date(timeStamp);
@@ -158,7 +155,7 @@ const ComentsDetails = ({ hotel }) => {
     }
 
     return calificacionTexto;
-  }
+  };
 
   return (
     <div className="p-3 my-9 ">
@@ -167,7 +164,11 @@ const ComentsDetails = ({ hotel }) => {
         <div className=" w-11/12 mb-5">
           <h2 className="text-sm">Calificación Promedio</h2>
           <div className="flex items-baseline ">
-            <p className="text-2xl mr-2 font-bold">{averageRating}</p>
+            <p className="text-2xl mr-2 font-bold">
+              {averageRating > 9.9
+                ? averageRating.toFixed(0)
+                : averageRating.toFixed(1)}
+            </p>
             <p className="font-bold">
               {obtenerCalificacionTexto(averageRating, totalRatings)}
             </p>
@@ -228,7 +229,7 @@ const ComentsDetails = ({ hotel }) => {
 
             <button
               onClick={() => {
-                isLogin ? handleSendNewComent() : handleShowAlertLogUp()
+                isLogin ? handleSendNewComent() : handleShowAlertLogUp();
               }}
               className="  text-gray-900 font-bold border border-gray-400 p-1 rounded-lg w-28 h-10 bg-gray-400 hover:bg-blue-600"
               type="submit"

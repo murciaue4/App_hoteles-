@@ -162,6 +162,20 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
       </div>
     );
   };
+
+
+
+
+/* 
+--------------------------S E G U N D A PARTE-------------------
+*/
+
+
+
+
+
+
+
   const FormHotelPart02 = () => {
     const [form02Data, setForm02Data] = useState({
       type: "",
@@ -230,8 +244,7 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
                     Nombre de la propiedad
                   </h1>
                   <span className="text-xl ">
-                    Proporcione el nombre oficial de su propiedad, por ejemplo
-                    el que utiliza en su propio sitio web.
+                    Proporcione el nombre oficial de su propiedad.
                   </span>
 
                   <input
@@ -259,7 +272,7 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
                       <span className="absolute right-0 text-sm w-96 h-auto border p-2 text-justify border-gray-400 bg-white rounded-lg shadow-lg hidden group-hover:block">
                         En este campo ingrese el nombre del grupo, red de
                         franquicias u organización a la que pertenece su
-                        propiedad, si no pertenece a ninguna de las anteriores
+                        propiedad, si NO PERTENECE a ninguna de las anteriores
                         omita este paso.
                       </span>
                       ?
@@ -273,7 +286,7 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
                 <span className="text-xl ">
                   Te recomendamos que uses aquí informacion de contacto
                   exclusivo de tu negocio, allí recibiras notificaciones e
-                  informacion relacionada, (no recomendamos el uso de tu
+                  informacion relacionada, (no haga uso de su
                   informacion de contacto personal).
                 </span>
 
@@ -324,9 +337,10 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
                 <div className="w-full flex justify-center mt-10">
                   <button
                     onClick={() => {
-                      setCurrentForm(3);
                       console.log(form02Data);
                       handleChangeForms(form02Data);
+                      console.log(form02Data);
+                      setCurrentForm(3);
                     }}
                     type="submit"
                     className="w-full h-14 py-2 px-4 rounded-sm bg-blue-500 text-white text-2xl hover:bg-blue-600"
@@ -342,6 +356,19 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
       </div>
     );
   };
+
+
+
+
+
+/* 
+--------------------------T E R C E R A PARTE-------------------
+*/
+
+
+
+
+
   const FormHotelPart03 = () => {
     console.log(formData);
     const [habitaciones, setHabitaciones] = useState({

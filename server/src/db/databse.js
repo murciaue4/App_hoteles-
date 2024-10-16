@@ -28,11 +28,11 @@ const postHotel = async (tabla, body) => {
   const result = await pool.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?;`, [body, body]);
   return result;
 };
+
 const postImage = async (tabla, req, idHotel, idUser) => {
   const files = req.files; // req.files contendrá la matriz de archivos si utilizo .array('images')
 
   const insertImageToDatabase = async (file) => {
-
     // Extraigo los parámetros del archivo que se encuentra en el objeto file de la request y de la base de datos.
     const name = file.filename;
     const data = fs.readFileSync(path.join(__dirname, '../public/uploads', file.filename));
@@ -45,21 +45,41 @@ const postImage = async (tabla, req, idHotel, idUser) => {
       originalName,
     };
     if (idHotel) {
-      dataBody.id_hotel = idHotel
+      dataBody.id_hotel = idHotel;
     }
     if (idUser) {
-      dataBody.id_user = idUser
+      dataBody.id_user = idUser;
     }
 
-    const [rows] = await pool.query(`SELECT originalname FROM ${tabla} WHERE id_hotel = ${idHotel};`);
+    const [rows] = await pool.query(`SELECT originalname FROM ${tabla} WHERE id_hotel = ?;`, [idHotel]);
 
     // Si es el primer dato, lo insertamos en la base de datos. Si no, filtramos para que no esté duplicado, filtramos por nombre original.
     if (rows.length === 0 || !rows.some((el) => el.originalname === originalName)) {
       const result = await pool.query(`INSERT INTO ${tabla} SET ? ON DUPLICATE KEY UPDATE ?;`, [dataBody, dataBody]);
       console.log(result);
+
+      // Eliminar el archivo temporal después de guardarlo en la base de datos
+      fs.unlink(path.join(__dirname, '../public/uploads', file.filename), (err) => {
+        if (err) {
+          console.error(`Error eliminando el archivo temporal: ${file.filename}`);
+        } else {
+          console.log(`Archivo temporal eliminado: ${file.filename}`);
+        }
+      });
+
       return result;
     } else {
       console.log(`La imagen con nombre ${originalName} ya existe en la base de datos.`);
+      
+      // Eliminar el archivo temporal ya que no se necesita
+      fs.unlink(path.join(__dirname, '../public/uploads', file.filename), (err) => {
+        if (err) {
+          console.error(`Error eliminando el archivo temporal: ${file.filename}`);
+        } else {
+          console.log(`Archivo temporal eliminado: ${file.filename}`);
+        }
+      });
+
       return null;
     }
   };
@@ -68,6 +88,9 @@ const postImage = async (tabla, req, idHotel, idUser) => {
   const results = await Promise.all(files.map(insertImageToDatabase));
   return results;
 };
+
+module.exports = { postImage };
+
 const postImgUser = async (tabla, req, idUser) => {
   try {
     const files = req.files;

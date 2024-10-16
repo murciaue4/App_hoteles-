@@ -44,55 +44,55 @@ const AddHotelForm = () => {
     });
   };
 
-  const SubmitForm01 = (e) => {
-    e.preventDefault();
+  // const SubmitForm01 = (e) => {
+  //   e.preventDefault();
 
-    const sendData = async (data) => {
-      console.log("DATA", data);
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token,
-          },
-        };
-        console.log("DATA2", data);
+  //   const sendData = async (data) => {
+  //     console.log("DATA", data);
+  //     try {
+  //       const config = {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: token,
+  //         },
+  //       };
+  //       console.log("DATA2", data);
 
-        const response = await axios.post(
-          `http://localhost:3333/user/hoteles/${user.id}`,
-          data,
-          config
-        );
-        console.log("RESPONSE:  ", response);
+  //       const response = await axios.post(
+  //         `http://localhost:3333/user/hoteles/${user.id}`,
+  //         data,
+  //         config
+  //       );
+  //       console.log("RESPONSE:  ", response);
 
-        if (response.data.body[0].insertId) {
-          setIdInserted(response.data.body[0].insertId);
-        }
+  //       if (response.data.body[0].insertId) {
+  //         setIdInserted(response.data.body[0].insertId);
+  //       }
 
-        setFormData({
-          id: 0,
-          id_user: user.id,
-          name: "",
-          location: "",
-          capacity: 0,
-          type: "",
-          camas: 1,
-          baño_privado: false,
-          wifi: false,
-          restaurant: false,
-          lavanderia: false,
-          parqueadero: false,
-          aire_acondicionado: false,
-          precio_por_habitacion: 0,
-        });
-      } catch (error) {
-        console.log("errrrrrrrrrr ::::: ", error.response.data);
-        handleSetErr(error.response.data);
-      }
-    };
+  //       setFormData({
+  //         id: 0,
+  //         id_user: user.id,
+  //         name: "",
+  //         location: "",
+  //         capacity: 0,
+  //         type: "",
+  //         camas: 1,
+  //         baño_privado: false,
+  //         wifi: false,
+  //         restaurant: false,
+  //         lavanderia: false,
+  //         parqueadero: false,
+  //         aire_acondicionado: false,
+  //         precio_por_habitacion: 0,
+  //       });
+  //     } catch (error) {
+  //       console.log("errrrrrrrrrr ::::: ", error.response.data);
+  //       handleSetErr(error.response.data);
+  //     }
+  //   };
 
-    sendData(formData);
-  };
+  //   sendData(formData);
+  // };
 
   return (
     <div>
