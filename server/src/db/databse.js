@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
 const dbConfig = require('../config');
-const { error } = require('console');
+const { error } = require('console') ;
 
 
 const pool = mysql.createPool(dbConfig.db);
