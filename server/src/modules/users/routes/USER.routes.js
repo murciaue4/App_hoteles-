@@ -22,7 +22,7 @@ router.post('/hoteles/:id_user', seguridad(), postHoteles)
 router.post('/hoteles/:id_hotel/comments/:id_user', seguridad(), postComments)
 router.post('/hoteles/:id_hotel/ratings/:id_user', seguridad(), postRatings)
 
-
+// mysql://root:zWpseUEPVAveUOwaTqjhpVzkKuaIrVsx@autorack.proxy.rlwy.net:49276/railway
 
 //___________________________GET___________________________
 
