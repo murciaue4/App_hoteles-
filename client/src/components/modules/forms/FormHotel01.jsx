@@ -175,7 +175,6 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
 
 
 
-
   const FormHotelPart02 = () => {
     const [form02Data, setForm02Data] = useState({
       type: "",

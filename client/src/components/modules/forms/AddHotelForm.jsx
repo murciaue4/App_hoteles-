@@ -120,14 +120,14 @@ const AddHotelForm = () => {
             formData={formData}
           />
         )}
-        {showFormHotel02 && (
+        {/* {showFormHotel02 && (
           <FormHotel02
             onClose={setShowFormHotel01}
             next={setShowFormHotel02}
             handleChangeForms={handleChangeForms}
             formData={formData}
           />
-        )}
+        )} */}
       </div>
     </div>
   );
