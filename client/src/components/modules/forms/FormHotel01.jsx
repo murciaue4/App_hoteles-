@@ -183,7 +183,6 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
       groupName: "",
       telefono: "",
       segundoTelefono: "",
-      celular: "",
       email: "",
     });
     const handleChangeForms02Data = (e) => {
@@ -309,17 +308,6 @@ const FormHotel01 = ({ handleChangeForms, formData, onClose, next }) => {
                     placeholder="Teléfono 2 (Opcional)"
                     value={form02Data.segundoTelefono}
                     onChange={handleChangeForms02Data}
-                  />
-                </div>
-                <div className="flex flex-col mb-5 ">
-                  <input
-                    className={`border outline-none border-gray-400 h-12 px-2 rounded-lg text-xl`}
-                    type="text"
-                    name="celular"
-                    placeholder="Celular"
-                    value={form02Data.celular}
-                    onChange={handleChangeForms02Data}
-                    required
                   />
                 </div>
 

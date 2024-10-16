@@ -1,7 +1,7 @@
 const error = require('../../../middlewares/errors');
 const respuestas = require('../../../red/respuestas');
 const auth = require('../../auth');
-const contHoteles = ('.')
+
 
 const T_USERS = 'user';
 const T_HOTEL = 'hoteles';
@@ -27,7 +27,7 @@ module.exports = function (dbIn) {
 
     const postHoteles = async (req, res) => {
         try {
-            const { id, name, email, ...rest } = req.body;
+            const { id, name, email, id_user, telefono, segundoTelefono, type, groupName, capacity } = req.body;
     
             // Obtener lista de hoteles existentes
             const hoteles = await obtenerHotelesExistentes();
@@ -36,9 +36,13 @@ module.exports = function (dbIn) {
             const isDuplicateName = hoteles.some(hotel => hotel.name === name);
             const isDuplicateId = hoteles.some(hotel => hotel.id === id);
             const hotelDuplicado = hoteles.find(hotel => hotel.email === email);
+
+            // uno los dos telefonos en una variable que se llame telefonos
+            const telefonos = telefono + segundoTelefono;
+
     
             // Construir objeto hotel
-            const hotel = { id, name, email, ...rest };
+            const hotel = { id, name, email, id_user, telefonos , segundoTelefono, celular, type, groupName, capacity };
     
             // Verificar si el nombre del hotel ya existe
             if (isDuplicateName && id === 0) {
@@ -73,7 +77,7 @@ module.exports = function (dbIn) {
 
     };
     
-    // Función para manejar errores
+   
    
     const postUsers = async (req, res) => {
         try {
@@ -136,7 +140,7 @@ module.exports = function (dbIn) {
         }
     };
     
-    // Función para manejar errores y mejorar la consistencia
+
     
     
     const postImages = async (req, res) => {
